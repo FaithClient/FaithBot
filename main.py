@@ -7,11 +7,12 @@ welcome_channel_id = 942179597112475681
 
 # intents = nextcord.Intents.default()
 # intents.members = True #DEV ENABLE ALL OF THE INTENTS!!!!!!!
-client = commands.Bot(command_prefix="f!")
+client = commands.Bot(command_prefix='f!', status=nextcord.Status.idle)
 
 @client.event
 async def on_ready():
-    print("Bot is online")
+    print(f"successfully logged in as {client.user}")
+    await client.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="FaithClient Users!"))
 
 @client.event
 async def on_member_join(member: nextcord.Member):
@@ -19,6 +20,10 @@ async def on_member_join(member: nextcord.Member):
     embed.set_thumbnail(url=member.avatar)
     await member.guild.get_channel(welcome_channel_id).send(embed=embed)
 
+
+@client.command()
+async def ping(interaction):
+    await interaction.send(f"Current Ping is {round(client.latency * 1000)}ms")
 
 if __name__ == "__main__":
     load_dotenv()
