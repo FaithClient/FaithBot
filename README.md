@@ -1,5 +1,4 @@
 # FaithBot
 Discord Bot for FaithClient
 
-
-## edit test - Hebsi
+By - immo, Hebiscuit, Devgocri
