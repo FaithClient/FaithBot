@@ -13,7 +13,7 @@ client = commands.Bot(command_prefix='f!', status=nextcord.Status.idle)
 @client.event
 async def on_ready():
     print(f"successfully logged in as {client.user}")
-    await client.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="FaithClient Users!"))
+    await client.change_presence(activity=nextcord.Activity(type=nextcord.ActivityType.playing, name="f!help | FaithClient!"))
 
 @client.event
 async def on_member_join(member: nextcord.Member):
