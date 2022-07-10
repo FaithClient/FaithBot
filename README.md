@@ -1,4 +1,8 @@
 # FaithBot
 Discord Bot for FaithClient
 
-By - immo, Hebiscuit, Devgocri
+Made by - immo, Hebiscuit, devgocri
+
+## TODO
+- Legit enable the intents
+- Test everything we have made
