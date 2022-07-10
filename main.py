@@ -1,10 +1,11 @@
 import nextcord, os
+import datetime
 
 from nextcord.ext import commands
 from dotenv import load_dotenv
 
 welcome_channel_id = 942179597112475681
-
+year = datetime.date.today().year
 # intents = nextcord.Intents.default()
 # intents.members = True #DEV ENABLE ALL OF THE INTENTS!!!!!!!
 client = commands.Bot(command_prefix='f!', status=nextcord.Status.idle)
@@ -23,7 +24,18 @@ async def on_member_join(member: nextcord.Member):
 
 @client.command()
 async def ping(interaction):
-    await interaction.send(f"Current Ping is {round(client.latency * 1000)}ms")
+    footer = f"Requested by {interaction.user}"
+    embed = nextcord.Embed(
+        color=0x5539cc,
+        title="Ping Pong! 🏓",
+        
+    )
+    embed.add_field(name='Bot Latency!', value=f"Bot Ping is **{round(client.latency * 1000)}ms**", inline=True)
+    embed.set_author(name=client.user, icon_url=client.user.avatar)
+    embed.set_footer(text=footer)
+    embed.set_thumbnail(url=client.user.avatar)
+    embed.timestamp = datetime.datetime.utcnow()
+    await interaction.send(embed=embed)
 
 if __name__ == "__main__":
     load_dotenv()
