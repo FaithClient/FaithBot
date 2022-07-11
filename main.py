@@ -7,21 +7,28 @@ from dotenv import load_dotenv
 # Variables
 welcome_channel_id = 942179597112475681
 year = datetime.date.today().year
-intents = nextcord.Intents.all() 
+intents = nextcord.Intents.default()
 intents.members = True
 color = 0xffd500
 
 # Bot Initialization
 bot = commands.Bot(command_prefix='f!', intents=intents, help_command=None)
+
+
 @bot.event
 async def on_ready():
     print(f"successfully logged in as {bot.user}")
-    await bot.change_presence(status=nextcord.Status.idle, activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="f!help | FaithClient!"))
+    await bot.change_presence(status=nextcord.Status.idle,
+                              activity=nextcord.Activity(type=nextcord.ActivityType.watching,
+                                                         name="f!help | FaithClient!"))
+
 
 # Detect Joining Members
 @bot.event
 async def on_member_join(member: nextcord.Member):
-    embed = nextcord.Embed(title="Heyo there!", description=f"👋 {member.mention} Welcome to the server!\n\nWe hope you have a great time in here :D", color=color)
+    embed = nextcord.Embed(title="Heyo there!",
+                           description=f"👋 {member.mention} Welcome to the server!\n\nWe hope you have a great time in here :D",
+                           color=color)
     embed.set_thumbnail(url=member.default_avatar)
     await member.guild.get_channel(welcome_channel_id).send(embed=embed)
 
