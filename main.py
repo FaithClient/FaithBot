@@ -33,7 +33,7 @@ async def on_member_join(member: nextcord.Member):
 
 
 # Basic Ping Command
-@bot.command()
+@bot.command(aliases=['Ping', 'Latency', 'latency'])
 async def ping(ctx):
     embed = nextcord.Embed(
         color=color,
@@ -44,7 +44,7 @@ async def ping(ctx):
     embed.set_thumbnail(url=bot.user.avatar)
     embed.set_footer(text=f"Requested by {ctx.author}")
     embed.timestamp = datetime.datetime.now()
-    await ctx.send(embed=embed)
+    await ctx.reply(embed=embed)
 
 
 ## Hebiscuit - Will continue on my own soon, i hate it
