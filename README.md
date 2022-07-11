@@ -7,5 +7,4 @@ Made by - immo, Hebiscuit, devgocri
 - Legit enable the intents -- done
 - Make the welcome message an image
 - Immo - Make the download command
-- Make Cogs know what bot.user does
-- FIX HELP COMMAND (CUSTOM)
+- Dynamic Help Commannd -- Underway

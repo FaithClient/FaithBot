@@ -12,10 +12,7 @@ intents.members = True
 color = 0xffd500
 
 # Bot Initialization
-bot = commands.Bot(command_prefix='f!', intents=intents)
-
-
-# Bot On Ready
+bot = commands.Bot(command_prefix='f!', intents=intents, help_command=None)
 @bot.event
 async def on_ready():
     print(f"successfully logged in as {bot.user}")
@@ -31,7 +28,7 @@ async def on_member_join(member: nextcord.Member):
 
 # Basic Ping Command
 @bot.command()
-async def ping(interaction):
+async def ping(ctx):
     embed = nextcord.Embed(
         color=color,
         title="Ping Pong! 🏓",
@@ -39,9 +36,26 @@ async def ping(interaction):
     embed.add_field(name='Bot Latency!', value=f"Bot ping is **{round(bot.latency * 1000)}ms**", inline=True)
     embed.set_author(name=bot.user, icon_url=bot.user.avatar)
     embed.set_thumbnail(url=bot.user.avatar)
-    embed.set_footer(text=f"Requested by {interaction.message.author}")
+    embed.set_footer(text=f"Requested by {ctx.author}")
     embed.timestamp = datetime.datetime.utcnow()
-    await interaction.send(embed=embed)
+    await ctx.send(embed=embed)
+
+
+## Hebiscuit - Will continue on my own soon, i hate it
+# # Help Command
+# @bot.command()
+# async def help(ctx):
+#     embed = nextcord.Embed(
+#         color=color,
+#     )
+#     embed.add_field(name='Basic Commands', value="""Ping 
+#     Usage: f!ping
+#     """, inline=True)
+#     embed.set_author(name=bot.user, icon_url=bot.user.avatar)
+#     embed.set_thumbnail(url=ctx.author.avatar.url)
+#     embed.timestamp = datetime.datetime.utcnow()
+#     embed.set_footer(text=f"Requested by {ctx.author}")
+#     await ctx.send(embed=embed)
 
 # Initialize Cogs
 for filename in os.listdir("./cogs"):
