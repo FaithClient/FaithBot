@@ -1,9 +1,7 @@
-from types import NoneType
 import nextcord, datetime
-from ast import alias
-from discord import Embed
-import nextcord
 
+from PIL import Image
+from io import BytesIO
 from nextcord.ext import commands
 from nextcord.ext.commands import Context
 
@@ -25,7 +23,22 @@ class Miscellaneous(commands.Cog):
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
-    
+
+    # @commands.command()
+    # async def wantedTest(self, ctx: Context, *, member: nextcord.Member = None):
+    #     if member == None:
+    #         member = ctx.author
+    #     wanted = Image.open("./assets/wanted.png")
+    #     asset = member.avatar.with_size(128)
+    #     data = BytesIO(await asset.read())
+    #     pfp = Image.open(data)
+    #     pfp = pfp.resize((177, 177))
+
+    #     wanted.paste(pfp, (120, 212))
+    #     wanted.save("./assets/profile.jpg")
+
+    #     await ctx.send(file = nextcord.File("./assets/profile.jpg"))
+
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
         embed = nextcord.Embed(color=color, description="‎\n**Sexo**\n- Bedezu")
