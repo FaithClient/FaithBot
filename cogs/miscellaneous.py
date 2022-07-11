@@ -11,7 +11,7 @@ color = 0xffd500
 # Bot Initialization
 bot = commands.Bot(command_prefix='f!', intents=intents)
 
-class Avatar(commands.Cog):
+class Miscellaneous(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
@@ -27,4 +27,4 @@ class Avatar(commands.Cog):
         await ctx.send(embed=embed)
 
 def setup(bot):
-    bot.add_cog(Avatar(bot))
+    bot.add_cog(Miscellaneous(bot))
