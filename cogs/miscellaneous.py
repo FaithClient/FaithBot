@@ -1,22 +1,16 @@
-from discord import Embed
-import nextcord
+import nextcord, datetime
 from nextcord.ext import commands
-import datetime
+from nextcord.ext.commands import Context
 
 year = datetime.date.today().year
-intents = nextcord.Intents.all()
-intents.members = True
 color = 0xffd500
 
-# Bot Initialization
-bot = commands.Bot(command_prefix='f!', intents=intents)
-
 class Miscellaneous(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    @bot.command()
-    async def avatar(self, ctx, *, member: nextcord.Member = None):
+    @commands.command(aliases=['Avatar', 'Av', 'av'])
+    async def avatar(self, ctx: Context, *, member: nextcord.Member = None):
         if member == None:
             member = ctx.author
         memberAv = member.avatar.url
@@ -25,6 +19,15 @@ class Miscellaneous(commands.Cog):
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
+    
+    @commands.Cog.listener()
+    async def on_message(self, message: nextcord.Message):
+        embed = nextcord.Embed(title="Sexo", color=color, description="- Bedezu")
+        embed.set_footer(text=f"Requested by {message.author} | 😳")
+        embed.set_image(url='https://cdn.shopify.com/s/files/1/1061/1924/products/Flushed_Emoji_Icon_5e6ce936-4add-472b-96ba-9082998adcf7_grande.png')
+        embed.timestamp = datetime.datetime.now()
+        if message.content.startswith("sexo") or message.content.startswith("Sexo"):
+            await message.reply(embed=embed) 
 
-def setup(bot):
+def setup(bot: commands.Bot):
     bot.add_cog(Miscellaneous(bot))

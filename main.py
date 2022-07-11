@@ -1,14 +1,15 @@
 # Imports
 import nextcord, os
 import datetime
+
 from nextcord.ext import commands
+from nextcord.ext.commands import Context
 from dotenv import load_dotenv
 
 # Variables
 welcome_channel_id = 942179597112475681
 year = datetime.date.today().year
 intents = nextcord.Intents.all()
-intents.members = True
 color = 0xffd500
 
 # Bot Initialization
@@ -34,7 +35,7 @@ async def on_member_join(member: nextcord.Member):
 
 # Basic Ping Command
 @bot.command()
-async def ping(ctx):
+async def ping(ctx: Context):
     embed = nextcord.Embed(
         color=color,
         title="Ping Pong! 🏓"
@@ -72,14 +73,14 @@ for filename in os.listdir("./cogs"):
 
 ## To solve cog bugs if they occur
 @bot.command()
-async def load(ctx):
+async def load(ctx: Context):
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
             bot.load_extension(f"cogs.{filename[:-3]}")
     await ctx.send("Loaded Cog!")
 
 @bot.command()
-async def unload(ctx):
+async def unload(ctx: Context):
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
             bot.unload_extension(f"cogs.{filename[:-3]}")
