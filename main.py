@@ -63,14 +63,34 @@ async def ping(ctx):
 #     embed.set_footer(text=f"Requested by {ctx.author}")
 #     await ctx.send(embed=embed)
 
-# devgocri - removed the below code as the cogs folder was not pushed to github
-# because it was empty, didnt have cog files in em yet
 
 # Initialize Cogs
-#for filename in os.listdir("./cogs"):
-#    if filename.endswith(".py"):
-#        bot.load_extension(f"cogs.{filename[:-3]}")
-#        print(f"Successfully loaded {filename}")
+for filename in os.listdir("./cogs"):
+   if filename.endswith(".py"):
+       bot.load_extension(f"cogs.{filename[:-3]}")
+       print(f"Successfully loaded {filename}")
+
+## To solve cog bugs if they occur
+@bot.command()
+async def load(ctx):
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            bot.load_extension(f"cogs.{filename[:-3]}")
+    await ctx.send("Loaded Cog!")
+
+@bot.command()
+async def unload(ctx):
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            bot.unload_extension(f"cogs.{filename[:-3]}")
+    await ctx.send("Unloaded Cog!")
+
+@bot.command()
+async def reload(ctx):
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            bot.reload_extension(f"cogs.{filename[:-3]}")
+    await ctx.send("Reloaded Cog!")
 
 # Runs Bot
 if __name__ == "__main__":

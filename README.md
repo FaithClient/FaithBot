@@ -6,5 +6,5 @@ Made by - immo, Hebiscuit, devgocri
 ## TODO
 - Legit enable the intents -- done
 - Make the welcome message an image
-- Immo - Make the download command
+- Make the download command
 - Dynamic Help Commannd -- Underway
