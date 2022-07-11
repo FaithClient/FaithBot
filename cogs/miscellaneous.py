@@ -28,9 +28,9 @@ class Miscellaneous(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message: nextcord.Message):
-        embed = nextcord.Embed(title="Sexo", color=color, description="- Bedezu")
+        embed = nextcord.Embed(color=color, description="‎\n**Sexo**\n- Bedezu")
         embed.set_footer(text=f"Requested by {message.author} | 😳")
-        embed.set_image(url='https://cdn.shopify.com/s/files/1/1061/1924/products/Flushed_Emoji_Icon_5e6ce936-4add-472b-96ba-9082998adcf7_grande.png')
+        embed.set_thumbnail(url='https://cdn.shopify.com/s/files/1/1061/1924/products/Flushed_Emoji_Icon_5e6ce936-4add-472b-96ba-9082998adcf7_grande.png')
         embed.timestamp = datetime.datetime.now()
         if message.content.startswith("sexo") or message.content.startswith("Sexo"):
             await message.reply(embed=embed) 
