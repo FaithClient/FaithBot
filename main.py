@@ -63,55 +63,6 @@ async def ping(ctx):
 #     embed.set_footer(text=f"Requested by {ctx.author}")
 #     await ctx.send(embed=embed)
 
-@bot.command()
-async def rules(ctx):
-    embed = nextcord.Embed(
-        title="Rules",
-        color=0xFF0000,
-        description="Please follow these rules to potentially avoid a warn, mute or ban."
-    )
-    embed.set_image("https://cdn.discordapp.com/attachments/995611552768086057/995926271542448218/faithbg_copy.png")
-    embed.add_field(
-        name="Be respectful to other users and their privacy.",
-        value="You must make sure you create a safe environment for others.",
-        inline=False
-    )
-    embed.add_field(
-        name="Do not post any NSFW content.",
-        value="NSFW is not tolerated at all. You will receive an immediate ban for this action.",
-        inline=False
-    )
-    embed.add_field(
-        name="Do not spam.",
-        value="Pretty self-explanatory, right?",
-        inline=False
-    )
-    embed.add_field(
-        name=f"Keep bot commands in #{bot.get_channel(942179597112475687)}.",
-        value="The bot commands channel is there for a reason. Use it.",
-        inline=False
-    )
-    embed.add_field(
-        name="English only.",
-        value="Please use English when talking in the chatrooms, it makes moderating easier and makes it easier for "
-              "other people to understand you (as they are more likely to already know English).",
-        inline=False
-    )
-    embed.add_field(
-        name="Swearing is allowed, but with exceptions.",
-        value="Swearing is fine for general conversation, however, we will not tolerate any insults or ways of using "
-              "swearing in a negative way.",
-        inline=False
-    )
-    embed.add_field(
-        name="Use common sense.",
-        value="Just because there might not be a rule listed here, doesn't give you the right to carry out any "
-              "actions that may cause others to feel unsafe, hurt the server etc.",
-        inline=False
-    )
-    embed.set_footer(text="Please note that these rules may change anytime.")
-    await ctx.send(embed=embed)
-
 # devgocri - removed the below code as the cogs folder was not pushed to github
 # because it was empty, didnt have cog files in em yet
 
