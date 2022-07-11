@@ -3,10 +3,11 @@ Discord Bot for FaithClient
 
 Made by - immo, Hebiscuit, devgocri
 
-## MAKE SURE TO HAVE EVERY COMMAND REPLY
+## MAKE SURE TO HAVE MOST COMMANDS REPLY
 ## TODO
 - Legit enable the intents -- done
-- Make the welcome message an image
+- Basic Moderation
+- Make the welcome message an image - Attempting
 - Make the download command
-- A thing which posts errors in chat as embed
+- A thing which posts errors in chat as embed - Done
 - Dynamic Help Commannd -- Underway
