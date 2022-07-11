@@ -1,3 +1,4 @@
+from types import NoneType
 import nextcord, datetime
 from ast import alias
 from discord import Embed
@@ -17,8 +18,10 @@ class Miscellaneous(commands.Cog):
     async def avatar(self, ctx: Context, *, member: nextcord.Member = None):
         if member == None:
             member = ctx.author
+        memberAv = member.avatar.url
+
         embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=color)
-        embed.set_image(url=member.avatar.url)
+        embed.set_image(url=memberAv)
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
