@@ -22,7 +22,7 @@ class Welcoming(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: nextcord.Member):
         embed = nextcord.Embed(title="Heyo there!", 
-            description=f"👋 {member.mention} welcome to the server!\nWe hope you have a great time here :D", 
+            description=f"👋 {member.mention} Welcome to the server!\nWe hope you have a great time here :D", 
             color=color
         )
         embed.set_thumbnail(url=member.avatar.url)
