@@ -1,8 +1,8 @@
 # FaithBot
 Discord Bot for FaithClient
-
 Made by - immo, Hebiscuit, devgocri
 
+## Final Files directory is for hosted version of faithbot
 ## MAKE SURE TO HAVE MOST COMMANDS REPLY
 ## TODO
 - Legit enable the intents -- done
