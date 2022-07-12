@@ -21,7 +21,7 @@ class Welcoming(commands.Cog):
 
         leave = Image.open("./assets/leaving.png")
         draw = ImageDraw.Draw(leave)
-        font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 19)
+        font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 23)
         asset = member.avatar.with_size(128)
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -45,7 +45,7 @@ class Welcoming(commands.Cog):
 
         welcome = Image.open("./assets/welcome.png")
         draw = ImageDraw.Draw(welcome)
-        font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 19)
+        font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 23)
         asset = member.avatar.with_size(128)
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -74,7 +74,7 @@ Please read the rules at <#942179596718186554>, and you can download the client 
 
         welcome = Image.open("./assets/welcome.png")
         draw = ImageDraw.Draw(welcome)
-        font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 21)
+        font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 23)
         asset = member.avatar.with_size(128)
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
