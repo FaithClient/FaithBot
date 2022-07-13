@@ -1,5 +1,3 @@
-from time import time
-from async_timeout import timeout
 import nextcord, datetime, humanfriendly
 
 from nextcord.ext import commands
