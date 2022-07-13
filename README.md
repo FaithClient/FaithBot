@@ -2,7 +2,7 @@
 Discord Bot for FaithClient
 Made by - immo, Hebiscuit, devgocri
 
-## Final Files directory is for hosted version of faithbot
+## Final Files directory is for Hosted Version of FaithBot
 ## MAKE SURE TO HAVE MOST COMMANDS REPLY
 ## TODO
 - Legit enable the intents -- done
@@ -11,3 +11,4 @@ Made by - immo, Hebiscuit, devgocri
 - Make the download command
 - A thing which posts errors in chat as embed - Done
 - Dynamic Help Commannd -- Underway
+
