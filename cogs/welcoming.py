@@ -22,7 +22,12 @@ class Welcoming(commands.Cog):
         leave = Image.open("./assets/leaving.png")
         draw = ImageDraw.Draw(leave)
         font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 23)
-        asset = member.avatar.with_size(128)
+
+        if member.avatar is None:
+            asset = member.default_avatar.with_size(128)
+        else:
+            asset = member.avatar.with_size(128)
+
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
         pfp = pfp.resize((135, 135))
@@ -46,7 +51,12 @@ class Welcoming(commands.Cog):
         welcome = Image.open("./assets/welcome.png")
         draw = ImageDraw.Draw(welcome)
         font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 23)
-        asset = member.avatar.with_size(128)
+
+        if member.avatar is None:
+            asset = member.default_avatar.with_size(128)
+        else:
+            asset = member.avatar.with_size(128)
+
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
         pfp = pfp.resize((135, 135))
@@ -75,7 +85,12 @@ Please read the rules at <#942179596718186554>, and you can download the client 
         welcome = Image.open("./assets/welcome.png")
         draw = ImageDraw.Draw(welcome)
         font = ImageFont.truetype("./assets/Raleway-Regular.ttf", 23)
-        asset = member.avatar.with_size(128)
+
+        if member.avatar is None:
+            asset = member.default_avatar.with_size(128)
+        else:
+            asset = member.avatar.with_size(128)
+
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
         pfp = pfp.resize((135, 135))
