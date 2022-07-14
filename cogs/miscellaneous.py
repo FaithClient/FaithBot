@@ -20,6 +20,11 @@ class Miscellaneous(commands.Cog):
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
+    
+    @commands.command(aliases=['serverinfo', 'server'])
+    async def serverstats(self, ctx: Context):
+        embed = nextcord.Embed(title='Server Stats ↗', color=color)
+        await ctx.send(f"These are the current server stats ↗ {ctx.author.mention}!", embed=embed)
 
 
 def setup(bot: commands.Bot):
