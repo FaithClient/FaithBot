@@ -9,7 +9,7 @@ class Important(commands.Cog):
         self.d_ch_id = 2
     
     @commands.command()
-    # @commands.has_role("Owner")
+    @commands.has_role("Owner")
     async def download(self, ctx: Context, title: str = None, ver: str = None, link = None, *, description: str):
         await ctx.message.delete()
         if title == None or ver == None or link == None:
