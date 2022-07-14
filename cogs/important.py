@@ -8,11 +8,6 @@ class Important(commands.Cog):
         self.bot = bot
         self.d_ch_id = 2
     
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx: Context, error: Exception):
-        embed = nextcord.Embed(title="An exception was raised", description=f"Details: {error}", color=nextcord.Color.dark_red())
-        await ctx.send(embed=embed)
-    
     @commands.command()
     # @commands.has_role("Owner")
     async def download(self, ctx: Context, title: str = None, ver: str = None, link = None, *, description: str):
@@ -36,10 +31,6 @@ class Important(commands.Cog):
         msg = await ctx.send(embed=embed)
         await msg.add_reaction("▶")
     
-    # @commands.Cog.listener()
-    # async def on_reaction_add(self, reaction: nextcord.Reaction, member: nextcord.User):
-    #     if member != self.bot.user:
-    #         if reaction.message.channel.id == 
 
     @commands.command()
     @commands.has_role("Bot Developer")
