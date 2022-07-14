@@ -10,9 +10,10 @@ class Moderation(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+    ## Kick Command
     @commands.command()
     #@commands.has_permissions(administrator=True)
-    async def kick(self, ctx, member: nextcord.Member, *, reason=None):
+    async def kick(self, ctx: Context, member: nextcord.Member, *, reason=None):
         if member == ctx.guild.owner:
             await ctx.send(f"You can't kick the owner! {ctx.author.mention}")
             return
@@ -20,7 +21,7 @@ class Moderation(commands.Cog):
             await ctx.send(f"YOU CANT KICK AN ADMIN! {ctx.author.mention}")
             return
         if member == ctx.author:
-            await ctx.send(f"You can't kick yourself {member.mention}")
+            await ctx.send(f"You can't kick yourself {ctx.author.mention}")
             return
 
         await member.kick(reason=reason)
@@ -40,8 +41,55 @@ class Moderation(commands.Cog):
             embed2.timestamp = datetime.datetime.now()
 
             await ctx.send(embed=embed2)
-    
+        
+    ## Ban Command
     @commands.command()
+    async def ban(self, ctx: Context, member: nextcord.Member, *, reason = None):
+        if member == ctx.guild.owner:
+            await ctx.send(f"You can't ban the owner! {ctx.author.mention}")
+            return
+        if member.guild_permissions.administrator:
+            await ctx.send(f"YOU CANT BAN AN ADMIN! {ctx.author.mention}")
+            return
+        if member == ctx.author:
+            await ctx.send(f"You can't ban yourself {ctx.author.mention}")
+            return
+
+        await member.ban(reason=reason)
+        embed1 = nextcord.Embed(title=f'{member.name}#{member.discriminator} has been banned!',color=color)
+        embed2 = nextcord.Embed(title=f'{member.name}#{member.discriminator} has been banned!',color=color)
+
+        if reason == None:
+            embed1.add_field(name='User Member',value=f'User: {member.mention}', inline=False)
+            embed1.set_footer(text=f'Requested by {ctx.author.mention}')
+            embed1.timestamp = datetime.datetime.now()
+
+            await ctx.send(embed=embed1)
+        else:
+            embed2.add_field(name='User Banned',value=f'User: {member.mention}', inline=False)
+            embed2.add_field(name='Reason for Ban',value=f'Reason: {reason}', inline=False)
+            embed2.set_footer(text=f'Requested by {ctx.author}')
+            embed2.timestamp = datetime.datetime.now()
+
+            await ctx.send(embed=embed2)
+
+
+    ## Unban Command ill work on it later - hebsi
+    # @commands.command()
+    # async def unban(self, ctx:Context, *, member):
+    #     banned_users = await ctx.guild.bans()
+    #     member_name, member_discriminator = member.split('#')
+
+    #     for ban_entry in banned_users:
+    #         user = ban_entry.user
+
+    #         if (user.name, user.discriminator) == (member_name, member_discriminator):
+    #             await ctx.guild.unban(user)
+    #             await ctx.send(f"{user} has been Unbanned by {ctx.author.mention}")
+
+
+    ## Mute Command
+    @commands.command(aliases=['timeout', 'TIMEOUT', 'Timeout', 'Mute', 'MUTE'])
     async def mute(self, ctx, member: nextcord.Member, time, *, reason):
         time = humanfriendly.parse_timespan(time)
         if member == ctx.guild.owner:
@@ -64,6 +112,8 @@ class Moderation(commands.Cog):
 
         await ctx.send(embed=embedTime)
 
+
+    ## Unmute Command
     @commands.command()
     async def unmute(self, ctx: Context, member: nextcord.Member, *, reason):
         if member._timeout is None:
