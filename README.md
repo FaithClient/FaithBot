@@ -2,7 +2,6 @@
 Discord Bot for FaithClient
 Made by - immo, Hebiscuit, devgocri
 
-## Final Files directory is for Hosted Version of FaithBot
 ## MAKE SURE TO HAVE MOST COMMANDS REPLY
 ## TODO
 - Legit enable the intents -- done
@@ -10,5 +9,5 @@ Made by - immo, Hebiscuit, devgocri
 - Make the welcome message an image - Done
 - Make the download command
 - A thing which posts errors in chat as embed - Done
-- Dynamic Help Commannd -- Underway
-
+- Dynamic Help Commannd -- on hold
+- Fix Welcoming not being able to send with empty pfp -- underway
