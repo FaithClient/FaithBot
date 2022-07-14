@@ -12,7 +12,7 @@ class Moderation(commands.Cog):
 
     ## Kick Command
     @commands.command()
-    #@commands.has_permissions(administrator=True)
+    #@commands.has_permissions(kick_members=True)
     async def kick(self, ctx: Context, member: nextcord.Member, *, reason=None):
         if member == ctx.guild.owner:
             await ctx.send(f"You can't kick the owner! {ctx.author.mention}")
@@ -41,9 +41,15 @@ class Moderation(commands.Cog):
             embed2.timestamp = datetime.datetime.now()
 
             await ctx.send(embed=embed2)
+    
+    @kick.error
+    async def kick_error(self, ctx:Context, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("**You are not allowed to kick users.**")
         
     ## Ban Command
     @commands.command()
+    #@commands.has_permissions(ban_members=True)
     async def ban(self, ctx: Context, member: nextcord.Member, *, reason = None):
         if member == ctx.guild.owner:
             await ctx.send(f"You can't ban the owner! {ctx.author.mention}")
@@ -72,6 +78,11 @@ class Moderation(commands.Cog):
             embed2.timestamp = datetime.datetime.now()
 
             await ctx.send(embed=embed2)
+    
+    @ban.error
+    async def ban_error(self, ctx:Context, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("**You are not allowed to ban users.**")
 
 
     ## Unban Command ill work on it later - hebsi
@@ -90,6 +101,7 @@ class Moderation(commands.Cog):
 
     ## Mute Command
     @commands.command(aliases=['timeout', 'TIMEOUT', 'Timeout', 'Mute', 'MUTE'])
+    #@commands.has_permissions(moderate_members=True)
     async def mute(self, ctx, member: nextcord.Member, time, *, reason):
         time = humanfriendly.parse_timespan(time)
         if member == ctx.guild.owner:
@@ -111,10 +123,16 @@ class Moderation(commands.Cog):
         embedTime.timestamp = datetime.datetime.now()
 
         await ctx.send(embed=embedTime)
+    
+    @mute.error
+    async def mute_error(self, ctx:Context, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("**You are not allowed to mute users.**")
 
 
     ## Unmute Command
     @commands.command()
+    #@commands.has_permissions(moderate_members=True)
     async def unmute(self, ctx: Context, member: nextcord.Member, *, reason):
         if member._timeout is None:
             await ctx.reply(f"Member does not have an active Timeout! {ctx.author.mention}")
@@ -129,6 +147,11 @@ class Moderation(commands.Cog):
         embedTime.timestamp = datetime.datetime.now()
 
         await ctx.send(embed=embedTime)
+    
+    @unmute.error
+    async def unmute_error(self, ctx:Context, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send("**You are not allowed to unmute users.**")
 
 def setup(bot: commands.Bot):
     bot.add_cog(Moderation(bot))
