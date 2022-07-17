@@ -13,6 +13,13 @@ class Important(commands.Cog):
         embed = nextcord.Embed(title="An exception was raised", description=f"Details: {error}", color=nextcord.Color.dark_red())
         await ctx.send(embed=embed)
     
+    @commands.command(aliases=["swt", "sendwt"])
+    @commands.has_any_role("Owner", "Bot Developer")
+    async def send_webtask(self, ctx: Context):
+        msg = await ctx.send("Starting task...")
+        self.webtask.start(msg)
+        await ctx.message.delete()
+    
     @tasks.loop(seconds=5)
     async def webtask(self, msg: nextcord.Message):
         ds = requests.get("https://fcapi.manx7.net/anal", timeout=5)
@@ -35,30 +42,30 @@ class Important(commands.Cog):
                     value = f"🟠 Client error (Code: {ws})",
                     inline = False
                 )
+                embed.color = nextcord.Color.dark_orange()
             elif ws >= 500:
                 embed.add_field(
                     name = "Website Status",
                     value = f"🔴 Server error (Code: {ws})",
                     inline = False
                 )
-            
-            if dss == True:
-                embed.add_field(
-                    name = "Download Server Status",
-                    value = "🟢 Up and running", 
-                    inline = False
-                )
-                embed.add_field(
-                    name = "Downloads",
-                    value = dc,
-                    inline = False
-                )
+                embed.color = nextcord.Color.dark_red()
+            embed.add_field(
+                name = "Download Server Status",
+                value = "🟢 Up and running", 
+                inline = False
+            )
+            embed.add_field(
+                name = "Downloads",
+                value = dc,
+                inline = False
+            )
             embed.set_author(
                 name = "FaithBot",
                 icon_url = self.bot.user.avatar
             )
+            embed.set_thumbnail(url=msg.guild.icon)
             embed.timestamp = datetime.datetime.now()
-            # await self.bot.get_guild(942179596697210931).get_channel(942179597305393231).history().
             await msg.edit(content=None, embed=embed)
         except:
             embed = nextcord.Embed(color=nextcord.Color.dark_red())
@@ -91,6 +98,7 @@ class Important(commands.Cog):
                 name = "FaithBot",
                 icon_url = self.bot.user.avatar
             )
+            embed.set_thumbnail(url=msg.guild.icon)
             embed.timestamp = datetime.datetime.now()
             await msg.edit(content=None, embed=embed)
 
@@ -147,19 +155,19 @@ class Important(commands.Cog):
                     value = f"🟠 Client error (Code: {ws})",
                     inline = False
                 )
+                embed.color = nextcord.Color.dark_orange()
             elif ws >= 500:
                 embed.add_field(
                     name = "Website Status",
                     value = f"🔴 Server error (Code: {ws})",
                     inline = False
                 )
-            
-            if dss == True:
-                embed.add_field(
-                    name = "Download Server Status",
-                    value = "🟢 Up and running", 
-                    inline = False
-                )
+                embed.color = nextcord.Color.dark_red()
+            embed.add_field(
+                name = "Download Server Status",
+                value = "🟢 Up and running", 
+                inline = False
+            )
             embed.set_author(
                 name = "FaithBot",
                 icon_url = self.bot.user.avatar

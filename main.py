@@ -19,12 +19,6 @@ bot = commands.Bot(command_prefix='ft!', intents=intents)
 async def on_ready():
     print(f"successfully logged in as {bot.user}")
     await bot.change_presence(status=nextcord.Status.idle, activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="f!help | FaithClient!"))
-
-@bot.command()
-@commands.has_any_role("Owner", "Bot Developer")
-async def send(ctx: Context):
-    msg = await ctx.send("Starting task...")
-    important.Important.webtask.start(important.Important(bot), msg=msg)
     
 # Initialize Cogs
 for filename in os.listdir("./cogs"):
