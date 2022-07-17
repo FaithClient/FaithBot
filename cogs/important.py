@@ -1,6 +1,6 @@
-import nextcord, asyncio, datetime
+import nextcord, asyncio, datetime, requests, re
 
-from nextcord.ext import commands
+from nextcord.ext import commands, tasks
 from nextcord.ext.commands import Context
 
 class Important(commands.Cog):
@@ -13,6 +13,87 @@ class Important(commands.Cog):
         embed = nextcord.Embed(title="An exception was raised", description=f"Details: {error}", color=nextcord.Color.dark_red())
         await ctx.send(embed=embed)
     
+    @tasks.loop(seconds=5)
+    async def webtask(self, msg: nextcord.Message):
+        ds = requests.get("https://fcapi.manx7.net/anal", timeout=5)
+        website = requests.get("https://faithclient.vercel.app/", timeout=5)
+        try:
+            ds = ds.json()
+            dss = ds["amOnline"]
+            dc = ds["downloads"]
+            ws = website.status_code
+            embed = nextcord.Embed(color=nextcord.Color.dark_green())
+            if ws == 200:
+                embed.add_field(
+                    name = "Website Status",
+                    value = "🟢 Up and running",
+                    inline = False
+                )
+            elif ws >= 400 and ws < 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🟠 Client error (Code: {ws})",
+                    inline = False
+                )
+            elif ws >= 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🔴 Server error (Code: {ws})",
+                    inline = False
+                )
+            
+            if dss == True:
+                embed.add_field(
+                    name = "Download Server Status",
+                    value = "🟢 Up and running", 
+                    inline = False
+                )
+                embed.add_field(
+                    name = "Downloads",
+                    value = dc,
+                    inline = False
+                )
+            embed.set_author(
+                name = "FaithBot",
+                icon_url = self.bot.user.avatar
+            )
+            embed.timestamp = datetime.datetime.now()
+            # await self.bot.get_guild(942179596697210931).get_channel(942179597305393231).history().
+            await msg.edit(content=None, embed=embed)
+        except:
+            embed = nextcord.Embed(color=nextcord.Color.dark_red())
+            ws = website.status_code
+            if ws == 200:
+                embed.add_field(
+                    name = "Website Status",
+                    value = "🟢 Up and running",
+                    inline = False
+                )
+            elif ws >= 400 and ws < 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🟠 Client error (Code: {ws})",
+                    inline = False
+                )
+            elif ws >= 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🔴 Server error (Code: {ws})",
+                    inline = False
+                )
+
+            embed.add_field(
+                name = "Download Server Status",
+                value = "🔴 Offline",
+                inline = False
+            )
+            embed.set_author(
+                name = "FaithBot",
+                icon_url = self.bot.user.avatar
+            )
+            embed.timestamp = datetime.datetime.now()
+            await msg.edit(content=None, embed=embed)
+
     @commands.command()
     @commands.has_role("Owner")
     async def download(self, ctx: Context, title: str = None, ver: str = None, link = None, *, description: str):
@@ -43,6 +124,90 @@ class Important(commands.Cog):
         embed.timestamp = datetime.datetime.now()
         channel = ctx.guild.get_channel(self.d_ch_id)
         await channel.send(embeds=embeds)
+    
+    @commands.command(aliases=["wb"])
+    async def webstatus(self, ctx: Context):
+        ds = requests.get("https://fcapi.manx7.net/anal", timeout=6)
+        website = requests.get("https://faithclient.vercel.app/", timeout=6)
+        try:
+            ds = ds.json()
+            dss = ds["amOnline"]
+            dc = ds["downloads"] # This is actually for the download counter, wrong command woops
+            ws = website.status_code
+            embed = nextcord.Embed(color=nextcord.Color.dark_green())
+            if ws == 200:
+                embed.add_field(
+                    name = "Website Status",
+                    value = "🟢 Up and running",
+                    inline = False
+                )
+            elif ws >= 400 and ws < 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🟠 Client error (Code: {ws})",
+                    inline = False
+                )
+            elif ws >= 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🔴 Server error (Code: {ws})",
+                    inline = False
+                )
+            
+            if dss == True:
+                embed.add_field(
+                    name = "Download Server Status",
+                    value = "🟢 Up and running", 
+                    inline = False
+                )
+            embed.set_author(
+                name = "FaithBot",
+                icon_url = self.bot.user.avatar
+            )
+            embed.timestamp = datetime.datetime.now()
+            await ctx.send(embed=embed)
+        except:
+            embed = nextcord.Embed(color=nextcord.Color.dark_red())
+            ws = website.status_code
+            if ws == 200:
+                embed.add_field(
+                    name = "Website Status",
+                    value = "🟢 Up and running",
+                    inline = False
+                )
+            elif ws >= 400 and ws < 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🟠 Client error (Code: {ws})",
+                    inline = False
+                )
+            elif ws >= 500:
+                embed.add_field(
+                    name = "Website Status",
+                    value = f"🔴 Server error (Code: {ws})",
+                    inline = False
+                )
+
+            embed.add_field(
+                name = "Download Server Status",
+                value = "🔴 Offline",
+                inline = False
+            )
+            embed.set_author(
+                name = "FaithBot",
+                icon_url = self.bot.user.avatar
+            )
+            embed.timestamp = datetime.datetime.now()
+            await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["d"])
+    async def downloads(self, ctx: Context):
+        ds = requests.get("https://fcapi.manx7.net/anal")
+        try:
+            counter = ds.json()["downloads"]
+            await ctx.send(f"Downloads: {counter}") #for testing perposes
+        except:
+            await ctx.send(f"Download server is offline, so I couldn't get the count...")
 
     @commands.command()
     @commands.has_any_role("Bot Developer", "Owner")

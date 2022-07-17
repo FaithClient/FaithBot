@@ -1,6 +1,7 @@
 # Imports
-import nextcord, os, datetime
+import nextcord, os, datetime, asyncio
 
+from cogs import important
 from nextcord.ext import commands
 from nextcord.ext.commands import Context
 from dotenv import load_dotenv
@@ -12,32 +13,22 @@ intents = nextcord.Intents.all()
 color = 0xffd500
 
 # Bot Initialization
-bot = commands.Bot(command_prefix='ft!', intents=intents, help_command=None)
-
+bot = commands.Bot(command_prefix='ft!', intents=intents)
 
 @bot.event
 async def on_ready():
     print(f"successfully logged in as {bot.user}")
     await bot.change_presence(status=nextcord.Status.idle, activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="f!help | FaithClient!"))
 
-
-# Basic Ping Command
-@bot.command(aliases=['latency', 'Ping', 'Latency'])
-async def ping(ctx: Context):
-    embed = nextcord.Embed(
-        color=color,
-        title="Ping Pong! 🏓"
-    )
-    embed.add_field(name='Bot Latency!', value=f"Bot ping is **{round(bot.latency * 1000)}ms**", inline=True)
-    embed.set_author(name=bot.user, icon_url=bot.user.avatar)
-    embed.set_thumbnail(url=bot.user.avatar)
-    embed.set_footer(text=f"Requested by {ctx.author}")
-    embed.timestamp = datetime.datetime.now()
-    await ctx.reply(embed=embed)
-
+@bot.command()
+@commands.has_any_role("Owner", "Bot Developer")
+async def send(ctx: Context):
+    msg = await ctx.send("Starting task...")
+    important.Important.webtask.start(important.Important(bot), msg=msg)
+    
 # Initialize Cogs
 for filename in os.listdir("./cogs"):
-   if filename.endswith(".py"):
+   if filename.endswith(".py") and filename != "__init__.py":
        bot.load_extension(f"cogs.{filename[:-3]}")
        print(f"Successfully loaded {filename}")
 
@@ -46,21 +37,21 @@ for filename in os.listdir("./cogs"):
 @bot.command()
 async def load(ctx: Context):
     for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
+        if filename.endswith(".py") and filename != "__init__.py":
             bot.load_extension(f"cogs.{filename[:-3]}")
     await ctx.send("Loaded Cogs!")
 
 @bot.command()
 async def unload(ctx: Context):
     for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
+        if filename.endswith(".py") and filename != "__init__.py":
             bot.unload_extension(f"cogs.{filename[:-3]}")
     await ctx.send("Unloaded Cogs!")
 
 @bot.command()
 async def reload(ctx: Context):
     for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
+        if filename.endswith(".py") and filename != "__init__.py":
             bot.reload_extension(f"cogs.{filename[:-3]}")
     await ctx.send("Reloaded Cogs!")
 
