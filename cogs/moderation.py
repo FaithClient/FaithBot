@@ -12,7 +12,7 @@ class Moderation(commands.Cog):
 
     ## Kick Command
     @commands.command()
-    @commands.has_permissions(kick_members=True)
+    #@commands.has_permissions(kick_members=True)
     async def kick(self, ctx: Context, member: nextcord.Member, *, reason=None):
         if member == ctx.guild.owner:
             await ctx.send(f"You can't kick the owner! {ctx.author.mention}")
@@ -49,7 +49,7 @@ class Moderation(commands.Cog):
         
     ## Ban Command
     @commands.command()
-    @commands.has_permissions(ban_members=True)
+    #@commands.has_permissions(ban_members=True)
     async def ban(self, ctx: Context, member: nextcord.Member, *, reason = None):
         if member == ctx.guild.owner:
             await ctx.send(f"You can't ban the owner! {ctx.author.mention}")
@@ -84,9 +84,24 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send("**You are not allowed to ban users.**")
 
+
+    ## Unban Command ill work on it later - hebsi
+    # @commands.command()
+    # async def unban(self, ctx:Context, *, member):
+    #     banned_users = await ctx.guild.bans()
+    #     member_name, member_discriminator = member.split('#')
+
+    #     for ban_entry in banned_users:
+    #         user = ban_entry.user
+
+    #         if (user.name, user.discriminator) == (member_name, member_discriminator):
+    #             await ctx.guild.unban(user)
+    #             await ctx.send(f"{user} has been Unbanned by {ctx.author.mention}")
+
+
     ## Mute Command
     @commands.command(aliases=['timeout', 'TIMEOUT', 'Timeout', 'Mute', 'MUTE'])
-    @commands.has_permissions(moderate_members=True)
+    #@commands.has_permissions(moderate_members=True)
     async def mute(self, ctx, member: nextcord.Member, time, *, reason):
         time = humanfriendly.parse_timespan(time)
         if member == ctx.guild.owner:
@@ -117,7 +132,7 @@ class Moderation(commands.Cog):
 
     ## Unmute Command
     @commands.command()
-    @commands.has_permissions(moderate_members=True)
+    #@commands.has_permissions(moderate_members=True)
     async def unmute(self, ctx: Context, member: nextcord.Member, *, reason):
         if member._timeout is None:
             await ctx.reply(f"Member does not have an active Timeout! {ctx.author.mention}")

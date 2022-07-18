@@ -2,3 +2,4 @@ nextcord
 python-dotenv
 pillow
 humanfriendly
+requests
