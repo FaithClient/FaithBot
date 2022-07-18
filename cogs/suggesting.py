@@ -40,6 +40,7 @@ class Suggesting(commands.Cog, name="Suggestions"):
     #     await ans.delete()
 
     @commands.command(name="delsug", aliases=["ds"])
+    @commands.has_any_role("Owner", "Bot Developer")
     async def deletesuggestion(self, ctx: Context, id: int = None):
         if id == None:
             msg = await ctx.send(f"{ctx.author.mention} You need to specify the suggestion's id!")

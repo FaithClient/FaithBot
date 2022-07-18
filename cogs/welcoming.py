@@ -75,6 +75,7 @@ Please read the rules at <#942179596718186554>, and you can download the client 
 
 
     @commands.command(aliases=["welcome"])
+    @commands.has_any_role("Owner", "Bot Developer")
     async def welcometest(self, ctx: Context, *, member: nextcord.Member = None):
         if member == None:
             member = ctx.author
