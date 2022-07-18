@@ -13,7 +13,7 @@ intents = nextcord.Intents.all()
 color = 0xffd500
 
 # Bot Initialization
-bot = commands.Bot(command_prefix='ft!', intents=intents)
+bot = commands.Bot(command_prefix='f!', intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
