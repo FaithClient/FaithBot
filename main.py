@@ -1,7 +1,6 @@
 # Imports
 import nextcord, os, datetime, asyncio
 
-from cogs import important
 from nextcord.ext import commands
 from nextcord.ext.commands import Context
 from dotenv import load_dotenv
@@ -13,7 +12,7 @@ intents = nextcord.Intents.all()
 color = 0xffd500
 
 # Bot Initialization
-bot = commands.Bot(command_prefix='ft!', intents=intents)
+bot = commands.Bot(command_prefix='ft!', intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
