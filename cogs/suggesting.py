@@ -39,7 +39,7 @@ class Suggesting(commands.Cog, name="Suggestions"):
     #     await asyncio.sleep(6)
     #     await ans.delete()
 
-    @commands.command(name="delsug", aliases=["ds"])
+    @commands.command(name="delsug", aliases=["ds"], description="Deletes a suggestion from <#942179597112475685>")
     @commands.has_any_role("Owner", "Bot Developer")
     async def deletesuggestion(self, ctx: Context, id: int = None):
         if id == None:

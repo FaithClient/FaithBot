@@ -74,7 +74,7 @@ Please read the rules at <#942179596718186554>, and you can download the client 
 """, file = nextcord.File("./assets/profile.png"), embed=embed)
 
 
-    @commands.command(aliases=["welcome"])
+    @commands.command(aliases=["welcome"], description="This is just a test command lol")
     @commands.has_any_role("Owner", "Bot Developer")
     async def welcometest(self, ctx: Context, *, member: nextcord.Member = None):
         if member == None:

@@ -13,7 +13,7 @@ class Important(commands.Cog):
         embed = nextcord.Embed(title="An exception was raised", description=f"Details: {error}", color=nextcord.Color.dark_red())
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["swt", "sendwt"])
+    @commands.command(aliases=["swt", "sendwt"], description="Starts the web status task")
     @commands.has_any_role("Owner", "Bot Developer")
     async def send_webtask(self, ctx: Context):
         msg = await ctx.send("Starting task...")
@@ -113,7 +113,7 @@ class Important(commands.Cog):
             final = await msg.edit(content=None, embed=embed)
             await countdown(5, final)
 
-    @commands.command()
+    @commands.command(description="Sends a download announcement to <#942179597112475678>")
     @commands.has_role("Owner")
     async def download(self, ctx: Context, title: str = None, ver: str = None, link = None, *, description: str):
         embeds = []
@@ -219,7 +219,7 @@ class Important(commands.Cog):
     #         embed.timestamp = datetime.datetime.now()
     #         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["d"])
+    @commands.command(aliases=["d"], description="Returns the total downloads of the client")
     async def downloads(self, ctx: Context):
         ds = requests.get("https://fcapi.manx7.net/anal")
         try:
@@ -228,7 +228,7 @@ class Important(commands.Cog):
         except:
             await ctx.send(f"Download server is offline, so I couldn't get the count...")
 
-    @commands.command()
+    @commands.command(description="Gives a role to a user")
     @commands.has_any_role("Bot Developer", "Owner")
     async def giverole(self, ctx: Context, role: nextcord.Role, member: nextcord.Member):
         await member.add_roles(role)

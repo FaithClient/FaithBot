@@ -8,7 +8,7 @@ class HelpCog(commands.Cog, name="Help"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    @commands.command()
+    @commands.command(description="Returns the help embed")
     async def help(self, ctx: Context, param = None):
         '''Returns the help embed'''
         async def predict(cmd: commands.Command):
@@ -70,8 +70,13 @@ class HelpCog(commands.Cog, name="Help"):
                     inline = False
                 )
                 embed.add_field(
+                    name = "Command Description",
+                    value = cmd.description if cmd.description is not None else "Not set",
+                    inline = False
+                )
+                embed.add_field(
                     name = "Command Cog",
-                    value = f"*{cmd.cog_name}*" if cmd.cog_name is not None else "*No category*",
+                    value = f"{cmd.cog_name}" if cmd.cog_name is not None else "No category",
                     inline = False
                 )
                 al = []
