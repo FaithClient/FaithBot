@@ -23,7 +23,7 @@ async def on_ready():
     channel = mg.get_channel(998383152793927760)
     await channel.purge(limit=100)
     msg = await channel.send("Starting task...")
-    mportant.webtask.start(Important(bot), msg=msg)
+    Important.webtask.start(Important(bot), msg=msg)
 
 # Initialize Cogs
 for filename in os.listdir("./cogs"):
