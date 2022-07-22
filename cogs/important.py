@@ -1,4 +1,4 @@
-import nextcord, asyncio, datetime, requests, re, time
+import nextcord, asyncio, datetime, requests
 
 from nextcord.ext import commands, tasks
 from nextcord.ext.commands import Context
@@ -20,7 +20,7 @@ class Important(commands.Cog):
         self.webtask.start(msg)
         await ctx.message.delete()
     
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=60)
     async def webtask(self, msg: nextcord.Message):
         async def countdown(t: int, message: nextcord.Message):
             membed = message.embeds[0]
@@ -75,7 +75,7 @@ class Important(commands.Cog):
             embed.timestamp = datetime.datetime.now()
             embed.set_footer(text="Updating in 0 second(s)")
             final = await msg.edit(content=None, embed=embed)
-            await countdown(5, final)
+            await countdown(60, final)
         except:
             embed = nextcord.Embed(color=nextcord.Color.dark_red())
             ws = website.status_code
@@ -111,7 +111,7 @@ class Important(commands.Cog):
             embed.timestamp = datetime.datetime.now()
             embed.set_footer(text="Updating in 0 second(s)")
             final = await msg.edit(content=None, embed=embed)
-            await countdown(5, final)
+            await countdown(60, final)
 
     @commands.command(description="Sends a download announcement to <#942179597112475678>")
     @commands.has_role("Owner")
@@ -142,82 +142,25 @@ class Important(commands.Cog):
         embed.set_footer(text=f"Announced by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
         channel = ctx.guild.get_channel(self.d_ch_id)
-        await channel.send(embeds=embeds)
-    
-    # @commands.command(aliases=["wb"])
-    # async def webstatus(self, ctx: Context):
-    #     ds = requests.get("https://fcapi.manx7.net/anal", timeout=6)
-    #     website = requests.get("https://faithclient.vercel.app/", timeout=6)
-    #     try:
-    #         ds = ds.json()
-    #         dss = ds["amOnline"]
-    #         dc = ds["downloads"] # This is actually for the download counter, wrong command woops
-    #         ws = website.status_code
-    #         embed = nextcord.Embed(color=nextcord.Color.dark_green())
-    #         if ws == 200:
-    #             embed.add_field(
-    #                 name = "Website Status",
-    #                 value = "🟢 Up and running",
-    #                 inline = False
-    #             )
-    #         elif ws >= 400 and ws < 500:
-    #             embed.add_field(
-    #                 name = "Website Status",
-    #                 value = f"🟠 Client error (Code: {ws})",
-    #                 inline = False
-    #             )
-    #             embed.color = nextcord.Color.dark_orange()
-    #         elif ws >= 500:
-    #             embed.add_field(
-    #                 name = "Website Status",
-    #                 value = f"🔴 Server error (Code: {ws})",
-    #                 inline = False
-    #             )
-    #             embed.color = nextcord.Color.dark_red()
-    #         embed.add_field(
-    #             name = "Download Server Status",
-    #             value = "🟢 Up and running", 
-    #             inline = False
-    #         )
-    #         embed.set_author(
-    #             name = "FaithBot",
-    #             icon_url = self.bot.user.avatar
-    #         )
-    #         embed.timestamp = datetime.datetime.now()
-    #         await ctx.send(embed=embed)
-    #     except:
-    #         embed = nextcord.Embed(color=nextcord.Color.dark_red())
-    #         ws = website.status_code
-    #         if ws == 200:
-    #             embed.add_field(
-    #                 name = "Website Status",
-    #                 value = "🟢 Up and running",
-    #                 inline = False
-    #             )
-    #         elif ws >= 400 and ws < 500:
-    #             embed.add_field(
-    #                 name = "Website Status",
-    #                 value = f"🟠 Client error (Code: {ws})",
-    #                 inline = False
-    #             )
-    #         elif ws >= 500:
-    #             embed.add_field(
-    #                 name = "Website Status",
-    #                 value = f"🔴 Server error (Code: {ws})",
-    #                 inline = False
-    #             )
+        msg = await channel.send(embeds=embeds)
+        # if len(pictures) == 1:
+        #     await msg.add_reaction("◀")
+        #     await msg.add_reaction("▶")
 
-    #         embed.add_field(
-    #             name = "Download Server Status",
-    #             value = "🔴 Offline",
-    #             inline = False
-    #         )
-    #         embed.set_author(
-    #             name = "FaithBot",
-    #             icon_url = self.bot.user.avatar
-    #         )
-    #         embed.timestamp = datetime.datetime.now()
-    #         await ctx.send(embed=embed)
+    # @commands.Cog.listener()
+    # async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.Member):
+    #     # if reaction.emoji == "▶" and self.bot.user in reaction.users().flatten():
+    #     #     if user != self.bot.user:
+    #     #         await reaction.remove()
+    #     #         message = reaction.message
+    #     #         embed = message.embeds[0]
+    #     #         title = embed.title
+    #     #         desc = embed.description
+    #     #         timestamp = embed.timestamp
+    #     #         pictures = [p.url for p in message.attachments]
+    #     if reaction.emoji == "🔴" and reaction.message.channel.id == 942179597112475685:
+    #         await reaction.message.edit(content="❌ Denied", embeds=reaction.message.embeds)
+
     
     @commands.command(aliases=["d"], description="Returns the total downloads of the client")
     async def downloads(self, ctx: Context):
