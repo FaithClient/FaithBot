@@ -1,6 +1,7 @@
 # Imports
 import nextcord, os, datetime, asyncio
 
+from cogs.important import Important
 from nextcord.ext import commands
 from nextcord.ext.commands import Context
 from dotenv import load_dotenv
@@ -18,7 +19,12 @@ bot = commands.Bot(command_prefix='ft!', intents=intents, help_command=None)
 async def on_ready():
     print(f"Successfully logged in as {bot.user}")
     await bot.change_presence(status=nextcord.Status.idle, activity=nextcord.Activity(type=nextcord.ActivityType.watching, name="f!help | FaithClient!"))
-    
+    # mg = bot.get_guild(942179596697210931)
+    # channel = mg.get_channel(998383152793927760)
+    # await channel.purge(limit=100)
+    # msg = await channel.send("Starting task...")
+    # Important.webtask.start(Important(bot), msg=msg)
+
 # Initialize Cogs
 for filename in os.listdir("./cogs"):
    if filename.endswith(".py") and filename != "__init__.py":
