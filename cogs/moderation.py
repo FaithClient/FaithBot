@@ -11,7 +11,8 @@ class Moderation(commands.Cog):
         self.bot = bot
 
     ## Kick Command
-    @commands.command()
+    @commands.command(description="Kicks a user from the server")
+    @commands.has_any_role("Owner", "Bot Developer", "Administrator", "Moderator")
     #@commands.has_permissions(kick_members=True)
     async def kick(self, ctx: Context, member: nextcord.Member, *, reason=None):
         if member == ctx.guild.owner:
@@ -48,7 +49,8 @@ class Moderation(commands.Cog):
             await ctx.send("**You are not allowed to kick users.**")
         
     ## Ban Command
-    @commands.command()
+    @commands.command(description="Bans a user from the server")
+    @commands.has_any_role("Owner", "Bot Developer", "Administrator", "Moderator")
     #@commands.has_permissions(ban_members=True)
     async def ban(self, ctx: Context, member: nextcord.Member, *, reason = None):
         if member == ctx.guild.owner:
@@ -100,7 +102,8 @@ class Moderation(commands.Cog):
 
 
     ## Mute Command
-    @commands.command(aliases=['timeout', 'TIMEOUT', 'Timeout', 'Mute', 'MUTE'])
+    @commands.command(aliases=['timeout', 'TIMEOUT', 'Timeout', 'Mute', 'MUTE'], description="Mutes a user")
+    @commands.has_any_role("Owner", "Bot Developer", "Administrator", "Moderator")
     #@commands.has_permissions(moderate_members=True)
     async def mute(self, ctx, member: nextcord.Member, time, *, reason):
         time = humanfriendly.parse_timespan(time)
@@ -131,7 +134,8 @@ class Moderation(commands.Cog):
 
 
     ## Unmute Command
-    @commands.command()
+    @commands.command(description="Unmutes a user")
+    @commands.has_any_role("Owner", "Bot Developer", "Administrator", "Moderator")
     #@commands.has_permissions(moderate_members=True)
     async def unmute(self, ctx: Context, member: nextcord.Member, *, reason):
         if member._timeout is None:
