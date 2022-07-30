@@ -8,7 +8,7 @@ class HelpCog(commands.Cog, name="Help"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    @commands.command(description="Returns the help embed")
+    @commands.command(description="Returns the help embed", usage="`ft!help`\n`ft!help <cog>`\n`ft!help <command>`")
     async def help(self, ctx: Context, param = None):
         '''Returns the help embed'''
         async def predict(cmd: commands.Command):
@@ -63,21 +63,21 @@ class HelpCog(commands.Cog, name="Help"):
         elif self.bot.get_command(param) in self.bot.commands:
             cmd = self.bot.get_command(param)
             if await predict(cmd) == True:
-                embed = nextcord.Embed(title="Command Info", color=nextcord.Color.teal())
+                embed = nextcord.Embed(title="Command Info 📜", color=nextcord.Color.teal())
                 embed.add_field(
                     name = "Command Name",
                     value = cmd.name,
-                    inline = False
+                    inline = True
                 )
                 embed.add_field(
                     name = "Command Description",
                     value = cmd.description if cmd.description is not None else "Not set",
-                    inline = False
+                    inline = True
                 )
                 embed.add_field(
                     name = "Command Cog",
                     value = f"{cmd.cog_name}" if cmd.cog_name is not None else "No category",
-                    inline = False
+                    inline = True
                 )
                 al = []
                 for alias in cmd.aliases:
@@ -86,14 +86,19 @@ class HelpCog(commands.Cog, name="Help"):
                     embed.add_field(
                         name = "Command Aliases",
                         value = " ".join(al),
-                        inline = False
+                        inline = True
                     )
                 else:
                     embed.add_field(
                         name = "Command Aliases",
                         value = ", ".join(al) if len(al) != 0 else "None",
-                        inline = False
+                        inline = True
                     )
+                embed.add_field(
+                    name = "Command Usage",
+                    value = cmd.usage if cmd.usage is not None else "Not set",
+                    inline = True
+                )
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
                 await ctx.send(embed=embed)

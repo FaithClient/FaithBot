@@ -11,7 +11,7 @@ class Miscellaneous(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    @commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency")
+    @commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency", usage="`ft!ping`")
     async def ping(self, ctx: Context):
         embed = nextcord.Embed(
             color=color,
@@ -24,7 +24,7 @@ class Miscellaneous(commands.Cog):
         embed.timestamp = datetime.datetime.now()
         await ctx.reply(embed=embed)
     
-    @commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar")
+    @commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar", usage="`ft!avatar`")
     async def avatar(self, ctx: Context, *, member: nextcord.Member = None):
         if member == None:
             member = ctx.author
@@ -40,7 +40,7 @@ class Miscellaneous(commands.Cog):
         embed.timestamp = datetime.datetime.now()
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server")
+    @commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server", usage="`ft!serverinfo`")
     async def serverinfo(self, ctx: Context):
         embed = nextcord.Embed(color=color)
         role_count = len(ctx.guild.roles)
@@ -61,7 +61,7 @@ class Miscellaneous(commands.Cog):
         await ctx.send(f"This is the Server Information ↗ {ctx.author.mention}!", embed=embed)
     
 
-    @commands.command(description="Returns information about a user")
+    @commands.command(description="Returns information about a user", usage="`ft!userinfo`")
     async def userinfo(self, ctx:Context, *, member: nextcord.Member = None):
         if member is None:
             member = ctx.author
