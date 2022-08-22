@@ -1,8 +1,8 @@
-import nextcord, asyncio, datetime
+import discord, asyncio, datetime
 
-from nextcord import utils
-from nextcord.ext import commands
-from nextcord.ext.commands import Context
+from discord import utils
+from discord.ext import commands
+from discord.ext.commands import Context
 
 class Suggesting(commands.Cog, name="Suggestions"):
     def __init__(self, bot: commands.Bot):
@@ -21,7 +21,7 @@ class Suggesting(commands.Cog, name="Suggestions"):
         channel = ctx.guild.get_channel(self.s_ch_id)
         try:
             message = await channel.fetch_message(id)
-        except nextcord.NotFound as e:
+        except discord.NotFound as e:
             print(e)
             msg = await ctx.send(f"{ctx.author.mention} The ID you specified was not a suggestion's ID!!")
             await asyncio.sleep(3)
@@ -33,14 +33,14 @@ class Suggesting(commands.Cog, name="Suggestions"):
         await ctx.send(f"{ctx.author.mention} The suggestion with ID {id} was successfully deleted!")        
 
     @commands.Cog.listener()
-    async def on_message(self, message: nextcord.Message):
+    async def on_message(self, message: discord.Message):
         if message.channel.id == self.s_ch_id:
             if message.author != self.bot.user:
                 await message.delete()
                 msg = await message.channel.send("Creating suggestion...")
-                embed = nextcord.Embed(
+                embed = discord.Embed(
                     description=message.content,
-                    color = nextcord.Color.green()
+                    color = discord.Color.green()
                 )
                 embed.set_author(
                     name = f"{message.author.name}'s suggestion",

@@ -1,7 +1,7 @@
-import nextcord, asyncio, datetime, requests
+import discord, asyncio, datetime, requests
 
-from nextcord.ext import commands, tasks
-from nextcord.ext.commands import Context
+from discord.ext import commands, tasks
+from discord.ext.commands import Context
 
 class Important(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -10,7 +10,7 @@ class Important(commands.Cog):
     
     @commands.Cog.listener()
     async def on_command_error(self, ctx: Context, error: Exception):
-        embed = nextcord.Embed(title="An exception was raised", description=f"Details: {error}", color=nextcord.Color.dark_red())
+        embed = discord.Embed(title="An exception was raised", description=f"Details: {error}", color=discord.Color.dark_red())
         await ctx.send(embed=embed)
     
     @commands.command(aliases=["swt", "sendwt"], description="Starts the web status task")
@@ -21,8 +21,8 @@ class Important(commands.Cog):
         await ctx.message.delete()
     
     @tasks.loop(seconds=60)
-    async def webtask(self, msg: nextcord.Message):
-        async def countdown(t: int, message: nextcord.Message):
+    async def webtask(self, msg: discord.Message):
+        async def countdown(t: int, message: discord.Message):
             membed = message.embeds[0]
             while t >= 0:
                 membed.set_footer(text=f"Updating in {t} second(s)")
@@ -36,7 +36,7 @@ class Important(commands.Cog):
             dss = ds["amOnline"]
             dc = ds["downloads"]
             ws = website.status_code
-            embed = nextcord.Embed(color=nextcord.Color.dark_green())
+            embed = discord.Embed(color=discord.Color.dark_green())
             if ws == 200:
                 embed.add_field(
                     name = "Website Status",
@@ -49,14 +49,14 @@ class Important(commands.Cog):
                     value = f"🟠 Client error (Code: {ws})",
                     inline = False
                 )
-                embed.color = nextcord.Color.dark_orange()
+                embed.color = discord.Color.dark_orange()
             elif ws >= 500:
                 embed.add_field(
                     name = "Website Status",
                     value = f"🔴 Server error (Code: {ws})",
                     inline = False
                 )
-                embed.color = nextcord.Color.dark_red()
+                embed.color = discord.Color.dark_red()
             embed.add_field(
                 name = "Download Server Status",
                 value = "🟢 Up and running", 
@@ -77,7 +77,7 @@ class Important(commands.Cog):
             final = await msg.edit(content=None, embed=embed)
             await countdown(60, final)
         except:
-            embed = nextcord.Embed(color=nextcord.Color.dark_red())
+            embed = discord.Embed(color=discord.Color.dark_red())
             ws = website.status_code
             if ws == 200:
                 embed.add_field(
@@ -124,7 +124,7 @@ class Important(commands.Cog):
             await msg.delete()
             return
         pictures = [p.url for p in ctx.message.attachments]
-        embed = nextcord.Embed(title=f"{title} {ver}", description=f"{description}", color=nextcord.Color.brand_green())
+        embed = discord.Embed(title=f"{title} {ver}", description=f"{description}", color=discord.Color.brand_green())
         embeds.append(embed)
         embed.add_field(
             name = "Download 🔽",
@@ -137,7 +137,7 @@ class Important(commands.Cog):
         elif len(pictures) > 1:
             for pic in pictures:
                 embeds.append(
-                    nextcord.Embed(type="image", color=nextcord.Color.brand_green()).set_image(pic)
+                    discord.Embed(type="image", color=discord.Color.brand_green()).set_image(pic)
                 )
         embed.set_footer(text=f"Announced by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
@@ -148,7 +148,7 @@ class Important(commands.Cog):
         #     await msg.add_reaction("▶")
 
     # @commands.Cog.listener()
-    # async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.Member):
+    # async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
     #     # if reaction.emoji == "▶" and self.bot.user in reaction.users().flatten():
     #     #     if user != self.bot.user:
     #     #         await reaction.remove()
@@ -173,7 +173,7 @@ class Important(commands.Cog):
 
     @commands.command(description="Gives a role to a user")
     @commands.has_any_role("Bot Developer", "Owner")
-    async def giverole(self, ctx: Context, role: nextcord.Role, member: nextcord.Member):
+    async def giverole(self, ctx: Context, role: discord.Role, member: discord.Member):
         await member.add_roles(role)
         await ctx.send(f"{ctx.author.mention} {role.mention} was given to {member.mention}")
 

@@ -1,7 +1,7 @@
-import nextcord, datetime
+import discord, datetime
 
-from nextcord.ext import commands
-from nextcord.ext.commands import Context
+from discord.ext import commands
+from discord.ext.commands import Context
 
 class HelpCog(commands.Cog, name="Help"):
     '''The cog containing the help command'''
@@ -17,7 +17,7 @@ class HelpCog(commands.Cog, name="Help"):
             except commands.CommandError:
                 return False
         if param == None:
-            embed = nextcord.Embed(color=nextcord.Color.teal(), description=f"Type `{self.bot.command_prefix}help <cog>` to learn more about a cog\nType `{self.bot.command_prefix}help <command>` to learn more about a specific command")
+            embed = discord.Embed(color=discord.Color.teal(), description=f"Type `{self.bot.command_prefix}help <cog>` to learn more about a cog\nType `{self.bot.command_prefix}help <command>` to learn more about a specific command")
             for cog_name, cog in self.bot.cogs.items():
                 overall = []
                 exec_cmds = [cmd for cmd in cog.get_commands() if await predict(cmd) == True]
@@ -43,15 +43,15 @@ class HelpCog(commands.Cog, name="Help"):
                 if await predict(cmd) == True:
                     exec_cmds.append(f"`{cmd.name}`")
             if len(exec_cmds) == 0:
-                embed = nextcord.Embed(
+                embed = discord.Embed(
                     title = "Error", 
                     description = "You do not have permission to view this cog",
-                    color = nextcord.Color.dark_teal())
+                    color = discord.Color.dark_teal())
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
                 await ctx.send(embed=embed)
             elif len(exec_cmds) > 0:
-                embed = nextcord.Embed(title=cog.qualified_name, color=nextcord.Color.teal())
+                embed = discord.Embed(title=cog.qualified_name, color=discord.Color.teal())
                 embed.add_field(
                     name = "Commands",
                     value = ", ".join(exec_cmds),
@@ -63,7 +63,7 @@ class HelpCog(commands.Cog, name="Help"):
         elif self.bot.get_command(param) in self.bot.commands:
             cmd = self.bot.get_command(param)
             if await predict(cmd) == True:
-                embed = nextcord.Embed(title="Command Info 📜", color=nextcord.Color.teal())
+                embed = discord.Embed(title="Command Info 📜", color=discord.Color.teal())
                 embed.add_field(
                     name = "Command Name",
                     value = cmd.name,
@@ -103,18 +103,18 @@ class HelpCog(commands.Cog, name="Help"):
                 embed.timestamp = datetime.datetime.now()
                 await ctx.send(embed=embed)
             else:
-                embed = nextcord.Embed(
+                embed = discord.Embed(
                     title = "Error", 
                     description = "You do not have permission to view this command",
-                    color = nextcord.Color.dark_teal())
+                    color = discord.Color.dark_teal())
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
                 await ctx.send(embed=embed)
         else:
-            embed = nextcord.Embed(
+            embed = discord.Embed(
                 title = "Error", 
                 description = f"**Invalid** command/cog...\nType `{self.bot.command_prefix}help` for a complete list of the accessible to you commands/cogs.",
-                color = nextcord.Color.dark_teal())
+                color = discord.Color.dark_teal())
             embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
             embed.timestamp = datetime.datetime.now()
             await ctx.send(embed=embed)

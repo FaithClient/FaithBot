@@ -1,9 +1,9 @@
-import nextcord, datetime
+import discord, datetime
 
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
-from nextcord.ext import commands
-from nextcord.ext.commands import Context
+from discord.ext import commands
+from discord.ext.commands import Context
 
 welcome_channel_id = 942179597112475681
 year = datetime.date.today().year
@@ -14,9 +14,9 @@ class Welcoming(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member: nextcord.Member):
+    async def on_member_remove(self, member: discord.Member):
 
-        embed = nextcord.Embed(color=color)
+        embed = discord.Embed(color=color)
         W,H = (320, 498)
 
         leave = Image.open("./assets/leaving.png")
@@ -39,13 +39,13 @@ class Welcoming(commands.Cog):
         leave.save("./assets/profile.png")
         embed.set_image(url="attachment://profile.png")
 
-        await member.guild.get_channel(welcome_channel_id).send(f"Goodbye, {member.mention}. We hope you enjoyed your stay here.", file = nextcord.File("./assets/profile.png"), embed=embed)
+        await member.guild.get_channel(welcome_channel_id).send(f"Goodbye, {member.mention}. We hope you enjoyed your stay here.", file = discord.File("./assets/profile.png"), embed=embed)
 
 
     @commands.Cog.listener()
-    async def on_member_join(self, member: nextcord.Member):
+    async def on_member_join(self, member: discord.Member):
 
-        embed = nextcord.Embed(color=color)
+        embed = discord.Embed(color=color)
         W,H = (320, 498)
 
         welcome = Image.open("./assets/welcome.png")
@@ -71,16 +71,16 @@ class Welcoming(commands.Cog):
 
         await member.guild.get_channel(welcome_channel_id).send(f"""Welcome to the FaithClient Discord, {member.mention}
 Please read the rules at <#942179596718186554>, and you can download the client at <#942179597112475678>
-""", file = nextcord.File("./assets/profile.png"), embed=embed)
+""", file = discord.File("./assets/profile.png"), embed=embed)
 
 
     @commands.command(aliases=["welcome"], description="This is just a test command lol")
     @commands.has_any_role("Owner", "Bot Developer")
-    async def welcometest(self, ctx: Context, *, member: nextcord.Member = None):
+    async def welcometest(self, ctx: Context, *, member: discord.Member = None):
         if member == None:
             member = ctx.author
 
-        embed = nextcord.Embed(color=color)
+        embed = discord.Embed(color=color)
         W,H = (320, 498)
 
         welcome = Image.open("./assets/welcome.png")
@@ -106,7 +106,7 @@ Please read the rules at <#942179596718186554>, and you can download the client 
 
         await ctx.send(f"""Welcome to the FaithClient Discord, {member.mention}
 Please read the rules at <#942179596718186554>, and you can download the client at <#942179597112475678>. 
-""", file = nextcord.File("./assets/profile.png"), embed=embed)
+""", file = discord.File("./assets/profile.png"), embed=embed)
 
 
 def setup(bot: commands.Bot):

@@ -1,8 +1,8 @@
 from math import perm
 from multiprocessing import context
-import nextcord, datetime
-from nextcord.ext import commands
-from nextcord.ext.commands import Context
+import discord, datetime
+from discord.ext import commands
+from discord.ext.commands import Context
 
 year = datetime.date.today().year
 color = 0xffd500
@@ -13,7 +13,7 @@ class Miscellaneous(commands.Cog):
     
     @commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency", usage="`ft!ping`")
     async def ping(self, ctx: Context):
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             color=color,
             title="Ping Pong! 🏓"
         )
@@ -25,7 +25,7 @@ class Miscellaneous(commands.Cog):
         await ctx.reply(embed=embed)
     
     @commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar", usage="`ft!avatar`")
-    async def avatar(self, ctx: Context, *, member: nextcord.Member = None):
+    async def avatar(self, ctx: Context, *, member: discord.Member = None):
         if member == None:
             member = ctx.author
         
@@ -34,7 +34,7 @@ class Miscellaneous(commands.Cog):
         else:
             memberAv = member.avatar.url
 
-        embed = nextcord.Embed(title=f"{member.name}'s Avatar", color=color)
+        embed = discord.Embed(title=f"{member.name}'s Avatar", color=color)
         embed.set_image(url=memberAv)
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
@@ -42,7 +42,7 @@ class Miscellaneous(commands.Cog):
     
     @commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server", usage="`ft!serverinfo`")
     async def serverinfo(self, ctx: Context):
-        embed = nextcord.Embed(color=color)
+        embed = discord.Embed(color=color)
         role_count = len(ctx.guild.roles)
         role_count -= 1
 
@@ -62,7 +62,7 @@ class Miscellaneous(commands.Cog):
     
 
     @commands.command(description="Returns information about a user", usage="`ft!userinfo`")
-    async def userinfo(self, ctx:Context, *, member: nextcord.Member = None):
+    async def userinfo(self, ctx:Context, *, member: discord.Member = None):
         if member is None:
             member = ctx.author
         if member.avatar is None:
@@ -74,7 +74,7 @@ class Miscellaneous(commands.Cog):
         roles = " ".join(rolelist)
         memberRoles = len(member.roles)
 
-        embed = nextcord.Embed(color=color, description=member.mention)
+        embed = discord.Embed(color=color, description=member.mention)
         embed.set_author(name=member.name, icon_url=memberAv)
         embed.set_thumbnail(url=memberAv)
 
@@ -91,7 +91,7 @@ class Miscellaneous(commands.Cog):
         #     "ban_members",
         #     "mention_everyone",
         # ]
-        # perm_list = nextcord.Permissions()
+        # perm_list = discord.Permissions()
         # for perm in perms_to_check:
         #     if getattr(member.guild_permissions, perm):
         #         perm_list.update(**{perm: True})
