@@ -1,7 +1,10 @@
+from pydoc import describe
 import discord, asyncio, datetime, requests
 
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
+
+bot = commands.Bot
 
 class Important(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -29,7 +32,7 @@ class Important(commands.Cog):
                 await message.edit(content=None, embed=membed)
                 await asyncio.sleep(1)
                 t -= 1
-        ds = requests.get("https://fcapi.manx7.net/anal", timeout=5)
+        ds = requests.get("https://fcapi.manx7.net/anal?authKey=supersecretkey$o_peoplecansee4n3l", timeout=5)
         website = requests.get("https://faithclient.vercel.app/", timeout=5)
         try:
             ds = ds.json()
@@ -164,7 +167,7 @@ class Important(commands.Cog):
     
     @commands.command(aliases=["d"], description="Returns the total downloads of the client")
     async def downloads(self, ctx: Context):
-        ds = requests.get("https://fcapi.manx7.net/anal")
+        ds = requests.get("https://fcapi.manx7.net/anal?authKey=supersecretkey$o_peoplecansee4n3l")
         try:
             counter = ds.json()["downloads"]
             await ctx.send(f"Downloads: {counter}") #for testing perposes
@@ -176,6 +179,52 @@ class Important(commands.Cog):
     async def giverole(self, ctx: Context, role: discord.Role, member: discord.Member):
         await member.add_roles(role)
         await ctx.send(f"{ctx.author.mention} {role.mention} was given to {member.mention}")
+
+#     #This is a test command
+#     @commands.command(description="A command to test the UI features of pycord")
+#     @commands.has_any_role("Owner", "Bot Developer")
+#     async def testui(self, ctx: Context):
+#         att = ctx.message.attachments
+#         if len(att) != 0:
+#             pictures = [p.url for p in att]
+#         else:
+#             warning = await ctx.send("Attach some pictures")
+#             await asyncio.sleep(3)
+#             await warning.delete()
+#             return
+#         embed = discord.Embed(
+#             title = "Testing...",
+#             color = discord.Color.green(),
+#             type = "image"
+#         )
+#         embed.set_image(url=pictures[0])
+#         if len(pictures) > 0:
+#             await ctx.send(embed=embed, view=TestView())
+#         else:
+#             await ctx.send(embed=embed)
+            
+# #This is a test view class
+# class TestView(discord.ui.View):
+#     @discord.ui.button(label="Swap!", style=discord.ButtonStyle.primary, emoji="➡")
+#     async def button_swap(self, button: discord.ui.Button, interaction: discord.Interaction):
+#         context = await bot.get_context(bot, self.message)
+#         embed = self.message.embeds[0]
+#         att = context
+#         pictures = [p.url for p in att]
+#         if len(att) > 0:
+#             embed_picture = embed.image.url
+#             try:
+#                 index = pictures.index(embed_picture) + 1
+#             except ValueError as e:
+#                 await interaction.response.send_message("An error occurred, check console for more details")
+#                 print("Exception: " + e)
+#             try:
+#                 embed.image.url = pictures[index]
+#                 await self.message.edit(embed=embed, view=self)
+#             except Exception as e:
+#                 await interaction.response.send_message("An error occurred, check console for more details")
+#                 print("Exception: " + e)
+#         else: return
 
 def setup(bot: commands.Bot):
     bot.add_cog(Important(bot))
