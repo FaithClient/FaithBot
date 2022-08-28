@@ -1,5 +1,3 @@
-from math import perm
-from multiprocessing import context
 import discord, datetime
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -107,6 +105,22 @@ class Miscellaneous(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        msg_cnt = message.content.lower()
+        if msg_cnt.__contains__("sexo"):
+            embed = discord.Embed(color=discord.Color.yellow())
+            embed.add_field(
+                name = "\n\n\nSexo",
+                value = "- Bedezu",
+                inline = False
+            )
+            embed.set_thumbnail(url="https://cdn.shopify.com/s/files/1/1061/1924/products/Flushed_Emoji_Icon_5e6ce936-4add-472b-96ba-9082998adcf7_grande.png?width=473&height=473")
+            embed.set_footer(
+                text = f"Requested by {message.author} | 😳"
+            )
+            embed.timestamp = datetime.datetime.now()
+            await message.reply(embed=embed)
 
 def setup(bot: commands.Bot):
     bot.add_cog(Miscellaneous(bot))
