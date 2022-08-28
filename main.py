@@ -24,6 +24,8 @@ async def on_ready():
     await channel.purge(limit=100)
     msg = await channel.send("Starting task...")
     Important.webtask.start(Important(bot), msg=msg)
+    await asyncio.sleep(3600)
+    await bot.close()
 
 # Initialize Cogs
 for filename in os.listdir("./cogs"):

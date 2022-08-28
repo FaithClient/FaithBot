@@ -115,6 +115,10 @@ class Important(commands.Cog):
             embed.set_footer(text="Updating in 0 second(s)")
             final = await msg.edit(content=None, embed=embed)
             await countdown(60, final)
+    
+    @tasks.loop()
+    async def autostop(self):
+        await self.bot.close()
 
     @commands.command(description="Sends a download announcement to <#942179597112475678>")
     @commands.has_role("Owner")
