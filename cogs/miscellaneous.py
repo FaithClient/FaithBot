@@ -104,6 +104,53 @@ class Miscellaneous(commands.Cog):
         embed.timestamp = datetime.datetime.now()
 
         await ctx.send(embed=embed)
+    
+    @commands.command()
+    @commands.has_any_role("Owner", "Bot Developer")
+    async def rules(self, ctx: Context):
+        embed = discord.Embed(
+            color = discord.Color.red(),
+            title = "Rules",
+            description = "Please follow these rules to potentially avoid a warn, mute or ban.",
+            timestamp = datetime.datetime.now()
+        )
+        embed.add_field(
+            name = "Be respectful to other users and their privacy.",
+            value = "You must make sure you create a safe environment for others.",
+            inline = False
+        ).add_field(
+            name = "Do not post any NSFW content.",
+            value = "NSFW is not tolerated at all. You will receive an immediate ban for this action.",
+            inline = False
+        ).add_field(
+            name = "Do not spam.",
+            value = "Pretty self-explanatory, right?",
+            inline = False
+        ).add_field(
+            name = "Keep bot commands in their specified channel",
+            value = "<#942179597112475687> is there for a reason. Use it.",
+            inline = False
+        ).add_field(
+            name = "English only.",
+            value = "Please use English when talking in the chatrooms, it makes moderating easier and makes it easier for other people to understand you (as they are more likely to already know English).",
+            inline = False
+        ).add_field(
+            name = "Swearing is allowed, but with exceptions.",
+            value = "Swearing is fine for general conversation, however, we will not tolerate any insults or ways of using swearing in a negative way.",
+            inline = False
+        ).add_field(
+            name = "Use common sense.",
+            value = "Just because there might not be a rule listed here, doesn't give you the right to carry out any actions that may cause others to feel unsafe, hurt the server etc.",
+            inline = False
+        ).set_image(
+            url = "attachment://rules.png"
+        )
+        embed.set_footer(
+            text = "Please note that these rules may change anytime.",
+            icon_url = self.bot.user.avatar
+        )
+
+        await ctx.send(embed = embed, file = discord.File("assets/rules.png"))
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
