@@ -1,23 +1,24 @@
 import discord, datetime
 
 from discord.ext import commands
-from discord.ext.commands import Context
+from discord import ApplicationContext as Context
+from discord import Option
 
 class HelpCog(commands.Cog, name="Help"):
     '''The cog containing the help command'''
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    @commands.command(description="Returns the help embed", usage="`ft!help`\n`ft!help <cog>`\n`ft!help <command>`")
-    async def help(self, ctx: Context, param = None):
+    @commands.slash_command(description="Returns the help embed")
+    async def help(self, ctx: Context, cmd: Option(str, name = "command", description = "idk testing ig", required = False), cogg: Option(str, name = "cog", description = "Testing again", required = False)):
         '''Returns the help embed'''
         async def predict(cmd: commands.Command):
             try:
                 return await cmd.can_run(ctx)
             except commands.CommandError:
                 return False
-        if param == None:
-            embed = discord.Embed(color=discord.Color.teal(), description=f"Type `{self.bot.command_prefix}help <cog>` to learn more about a cog\nType `{self.bot.command_prefix}help <command>` to learn more about a specific command")
+        if cmd == None and cogg == None:
+            embed = discord.Embed(color=discord.Color.teal())
             for cog_name, cog in self.bot.cogs.items():
                 overall = []
                 exec_cmds = [cmd for cmd in cog.get_commands() if await predict(cmd) == True]
@@ -35,9 +36,9 @@ class HelpCog(commands.Cog, name="Help"):
                 )
             embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
             embed.timestamp = datetime.datetime.now()
-            await ctx.send(embed=embed)
-        elif param in self.bot.cogs:
-            cog = self.bot.get_cog(param)
+            await ctx.respond(embed=embed)
+        elif cmd == None and cogg != None and cog in self.bot.cogs:
+            cog = self.bot.get_cog(cogg)
             exec_cmds = []
             for cmd in cog.get_commands():
                 if await predict(cmd) == True:
@@ -49,7 +50,7 @@ class HelpCog(commands.Cog, name="Help"):
                     color = discord.Color.dark_teal())
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
-                await ctx.send(embed=embed)
+                await ctx.respond(embed=embed)
             elif len(exec_cmds) > 0:
                 embed = discord.Embed(title=cog.qualified_name, color=discord.Color.teal())
                 embed.add_field(
@@ -59,9 +60,9 @@ class HelpCog(commands.Cog, name="Help"):
                 )
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
-                await ctx.send(embed=embed)
-        elif self.bot.get_command(param) in self.bot.commands:
-            cmd = self.bot.get_command(param)
+                await ctx.respond(embed=embed)
+        elif cmd != None and cog == None and self.bot.get_command(cmd) in self.bot.commands:
+            cmd = self.bot.get_command(cmd)
             if await predict(cmd) == True:
                 embed = discord.Embed(title="Command Info 📜", color=discord.Color.teal())
                 embed.add_field(
@@ -101,7 +102,9 @@ class HelpCog(commands.Cog, name="Help"):
                 )
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
-                await ctx.send(embed=embed)
+                await ctx.respond(embed=embed)
+            elif cmd != None and cogg != None:
+                await ctx.respond("OOP ERROR BOY")
             else:
                 embed = discord.Embed(
                     title = "Error", 
@@ -109,7 +112,7 @@ class HelpCog(commands.Cog, name="Help"):
                     color = discord.Color.dark_teal())
                 embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
                 embed.timestamp = datetime.datetime.now()
-                await ctx.send(embed=embed)
+                await ctx.respond(embed=embed)
         else:
             embed = discord.Embed(
                 title = "Error", 
@@ -117,7 +120,9 @@ class HelpCog(commands.Cog, name="Help"):
                 color = discord.Color.dark_teal())
             embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar)
             embed.timestamp = datetime.datetime.now()
-            await ctx.send(embed=embed)
+            await ctx.respond(embed=embed)
+
+    #TO-REFORM
 
 def setup(bot: commands.Bot):
     bot.add_cog(HelpCog(bot))

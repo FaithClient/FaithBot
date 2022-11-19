@@ -1,6 +1,7 @@
 import discord, datetime
+from discord import ApplicationContext as Context
+from discord import Option
 from discord.ext import commands
-from discord.ext.commands import Context
 
 year = datetime.date.today().year
 color = 0xffd500
@@ -9,7 +10,8 @@ class Miscellaneous(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    @commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency", usage="`ft!ping`")
+    #@commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency", usage="`ft!ping`")
+    @commands.slash_command(description = "Returns the bot's latency")
     async def ping(self, ctx: Context):
         embed = discord.Embed(
             color=color,
@@ -20,10 +22,11 @@ class Miscellaneous(commands.Cog):
         embed.set_thumbnail(url=self.bot.user.avatar)
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
-        await ctx.reply(embed=embed)
+        await ctx.respond(embed=embed)
     
-    @commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar", usage="`ft!avatar`")
-    async def avatar(self, ctx: Context, *, member: discord.Member = None):
+    #@commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar")
+    @commands.slash_command(description="Returns a user's avatar")
+    async def avatar(self, ctx: Context, member: Option(discord.Member, name = "member", description = "Who's avatar do you want?", required = False)):
         if member == None:
             member = ctx.author
         
@@ -36,9 +39,10 @@ class Miscellaneous(commands.Cog):
         embed.set_image(url=memberAv)
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.timestamp = datetime.datetime.now()
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
     
-    @commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server", usage="`ft!serverinfo`")
+    #@commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server", usage="`f!serverinfo`")
+    @commands.slash_command(description="Returns information about the server")
     async def serverinfo(self, ctx: Context):
         embed = discord.Embed(color=color)
         role_count = len(ctx.guild.roles)
@@ -56,11 +60,12 @@ class Miscellaneous(commands.Cog):
     
         embed.set_footer(text=f"ID: {ctx.guild.id} | Server Created • {ctx.guild.created_at.__format__('%d/%m/%y')}")
 
-        await ctx.send(f"This is the Server Information ↗ {ctx.author.mention}!", embed=embed)
+        await ctx.respond(f"This is the Server Information ↗ {ctx.author.mention}!", embed=embed)
     
 
-    @commands.command(description="Returns information about a user", usage="`ft!userinfo`")
-    async def userinfo(self, ctx:Context, *, member: discord.Member = None):
+    #@commands.command(description="Returns information about a user", usage="`f!userinfo`")
+    @commands.slash_command(description="Returns information about a user")
+    async def userinfo(self, ctx: Context, member: Option(discord.Member, name = "member", description = "Who's profile do you want to check?", required = False)):
         if member is None:
             member = ctx.author
         if member.avatar is None:
@@ -103,9 +108,9 @@ class Miscellaneous(commands.Cog):
         embed.set_footer(text=f"ID: {member.id}")
         embed.timestamp = datetime.datetime.now()
 
-        await ctx.send(embed=embed)
+        await ctx.respond(embed=embed)
     
-    @commands.command()
+    @commands.slash_command()
     @commands.has_any_role("Owner", "Bot Developer")
     async def rules(self, ctx: Context):
         embed = discord.Embed(

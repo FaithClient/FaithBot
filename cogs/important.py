@@ -1,7 +1,7 @@
 import discord, asyncio, datetime, requests
 
 from discord.ext import commands, tasks
-from discord.ext.commands import Context
+from discord import ApplicationContext as Context
 
 bot = commands.Bot
 
@@ -15,12 +15,12 @@ class Important(commands.Cog):
         embed = discord.Embed(title="An exception was raised", description=f"Details: {error}", color=discord.Color.dark_red())
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["swt", "sendwt"], description="Starts the web status task")
-    @commands.has_any_role("Owner", "Bot Developer")
-    async def send_webtask(self, ctx: Context):
-        msg = await ctx.send("Starting task...")
-        self.webtask.start(msg)
-        await ctx.message.delete()
+    # @commands.command(aliases=["swt", "sendwt"], description="Starts the web status task")
+    # @commands.has_any_role("Owner", "Bot Developer")
+    # async def send_webtask(self, ctx: Context):
+    #     msg = await ctx.send("Starting task...")
+    #     self.webtask.start(msg)
+    #     await ctx.message.delete()
     
     @tasks.loop(seconds=60)
     async def webtask(self, msg: discord.Message):
@@ -119,39 +119,39 @@ class Important(commands.Cog):
     async def autostop(self):
         await self.bot.close()
 
-    @commands.command(description="Sends a download announcement to <#942179597112475678>")
-    @commands.has_role("Owner")
-    async def download(self, ctx: Context, title: str = None, ver: str = None, link = None, *, description: str):
-        embeds = []
-        await ctx.message.delete()
-        if title == None or ver == None or link == None:
-            msg = await ctx.send(f"{ctx.author.mention} You need to specify a title / version / link")
-            await asyncio.sleep(5)
-            await msg.delete()
-            return
-        pictures = [p.url for p in ctx.message.attachments]
-        embed = discord.Embed(title=f"{title} {ver}", description=f"{description}", color=discord.Color.brand_green())
-        embeds.append(embed)
-        embed.add_field(
-            name = "Download 🔽",
-            value=f"[Click here to download]({link})",
-            inline=False
-        )
-        embed.set_thumbnail(url=self.bot.user.avatar)
-        if len(pictures) == 1:
-            embed.set_image(url=pictures[0])
-        elif len(pictures) > 1:
-            for pic in pictures:
-                embeds.append(
-                    discord.Embed(type="image", color=discord.Color.brand_green()).set_image(pic)
-                )
-        embed.set_footer(text=f"Announced by {ctx.author}")
-        embed.timestamp = datetime.datetime.now()
-        channel = ctx.guild.get_channel(self.d_ch_id)
-        msg = await channel.send(embeds=embeds)
-        # if len(pictures) == 1:
-        #     await msg.add_reaction("◀")
-        #     await msg.add_reaction("▶")
+    # @commands.command(description="Sends a download announcement to <#942179597112475678>")
+    # @commands.has_role("Owner")
+    # async def download(self, ctx: Context, title: str = None, ver: str = None, link = None, *, description: str):
+    #     embeds = []
+    #     await ctx.message.delete()
+    #     if title == None or ver == None or link == None:
+    #         msg = await ctx.send(f"{ctx.author.mention} You need to specify a title / version / link")
+    #         await asyncio.sleep(5)
+    #         await msg.delete()
+    #         return
+    #     pictures = [p.url for p in ctx.message.attachments]
+    #     embed = discord.Embed(title=f"{title} {ver}", description=f"{description}", color=discord.Color.brand_green())
+    #     embeds.append(embed)
+    #     embed.add_field(
+    #         name = "Download 🔽",
+    #         value=f"[Click here to download]({link})",
+    #         inline=False
+    #     )
+    #     embed.set_thumbnail(url=self.bot.user.avatar)
+    #     if len(pictures) == 1:
+    #         embed.set_image(url=pictures[0])
+    #     elif len(pictures) > 1:
+    #         for pic in pictures:
+    #             embeds.append(
+    #                 discord.Embed(type="image", color=discord.Color.brand_green()).set_image(pic)
+    #             )
+    #     embed.set_footer(text=f"Announced by {ctx.author}")
+    #     embed.timestamp = datetime.datetime.now()
+    #     channel = ctx.guild.get_channel(self.d_ch_id)
+    #     msg = await channel.send(embeds=embeds)
+    #     # if len(pictures) == 1:
+    #     #     await msg.add_reaction("◀")
+    #     #     await msg.add_reaction("▶")
 
     # @commands.Cog.listener()
     # async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
@@ -168,20 +168,21 @@ class Important(commands.Cog):
     #         await reaction.message.edit(content="❌ Denied", embeds=reaction.message.embeds)
 
     
-    @commands.command(aliases=["d"], description="Returns the total downloads of the client")
+    #@commands.command(aliases=["d"], description="Returns the total downloads of the client")
+    @commands.slash_command(description="Returns the total downloads of the client")
     async def downloads(self, ctx: Context):
         ds = requests.get("https://fcapi.manx7.net/anal?authKey=supersecretkey$o_peoplecansee4n3l")
         try:
             counter = ds.json()["downloads"]
-            await ctx.send(f"Downloads: {counter}") #for testing perposes
+            await ctx.respond(f"Downloads: {counter}") #for testing perposes
         except:
-            await ctx.send(f"Download server is offline, so I couldn't get the count...")
+            await ctx.respond(f"Download server is offline, so I couldn't get the count...")
 
-    @commands.command(description="Gives a role to a user")
-    @commands.has_any_role("Bot Developer", "Owner")
-    async def giverole(self, ctx: Context, role: discord.Role, member: discord.Member):
-        await member.add_roles(role)
-        await ctx.send(f"{ctx.author.mention} {role.mention} was given to {member.mention}")
+    # @commands.command(description="Gives a role to a user")
+    # @commands.has_any_role("Bot Developer", "Owner")
+    # async def giverole(self, ctx: Context, role: discord.Role, member: discord.Member):
+    #     await member.add_roles(role)
+    #     await ctx.send(f"{ctx.author.mention} {role.mention} was given to {member.mention}")
 
 #     #This is a test command
 #     @commands.command(description="A command to test the UI features of pycord")
