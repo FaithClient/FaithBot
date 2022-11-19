@@ -31,9 +31,9 @@ class Important(commands.Cog):
                 await message.edit(content=None, embed=membed)
                 await asyncio.sleep(1)
                 t -= 1
-        ds = requests.get("https://api.faithclient.tk/anal?authKey=supersecretkey$o_peoplecansee4n3l", timeout=5)
         website = requests.get("https://faithclient.vercel.app/", timeout=5)
         try:
+            ds = requests.get("https://api.faithclient.tk/anal?authKey=supersecretkey$o_peoplecansee4n3l", timeout=5)
             ds = ds.json()
             dss = ds["amOnline"]
             dc = ds["downloads"]
