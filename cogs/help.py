@@ -124,10 +124,18 @@ class HelpCog(commands.Cog, name="Help"):
 
     @commands.slash_command(description = "Get help!")
     @discord.commands.option(name = "command", type = str, description = "Testing 1", required = False)
-    @discord.commands.option(name = "cog", type = str, description = "Testing 2", required = False)
-    async def new_help(self, ctx: Context, command: str, cog: str): #TEMP NAME :pp
-        if command == None and cog == None:
-            
+    async def new_help(self, ctx: Context, command: str): #TEMP NAME :pp
+        async def command_help(ctx: discord.ApplicationContext, cmd: str):
+            fcmd = self.bot.get_application_command(cmd)
+            embed = discord.Embed(
+                color = 0xead1dc,
+                title = "Testing",
+                description = f"You selected the `{fcmd.name}` command",
+                timestamp = datetime.datetime.now()
+            )
+            await ctx.send(embed = embed)
+
+        if command == None:
             def return_commands(bot: commands.Bot):
                 options = list()
                 for cmd in bot.application_commands:
@@ -138,7 +146,12 @@ class HelpCog(commands.Cog, name="Help"):
                 return options
             
             async def select_callback(interaction: discord.Interaction):
-                await interaction.response.send_message(f"You selected {select.values[0]}")
+                #await interaction.response.send_message(f"You selected {select.values[0]}")
+                await command_help(ctx, select.values[0])
+
+            async def cbutton_callback(interaction: discord.Interaction):
+                msg = await interaction.message.edit(content = "Closing in 3...", view = None)
+                await msg.delete(delay = 3, reason = "User interaction")
             
             async def interaction_check(interaction: discord.Interaction):
                 return interaction.user.id == ctx.author.id
@@ -149,14 +162,23 @@ class HelpCog(commands.Cog, name="Help"):
                 max_values = 1,
                 options = return_commands(self.bot)
             )
-
             select.callback = select_callback
+
+            cbutton = discord.ui.Button(
+                style = discord.ButtonStyle.danger,
+                label = "Close",
+                emoji = "❌"
+            )
+            cbutton.callback = cbutton_callback
 
             view = discord.ui.View()
             view.add_item(select)
+            view.add_item(cbutton)
             view.interaction_check = interaction_check
 
             await ctx.respond(content = "Ayo, wait a minute...", view = view)
+        elif command != None and command in self.bot.application_commands:
+            await command_help(ctx, command)
 
 def setup(bot: commands.Bot):
     bot.add_cog(HelpCog(bot))
