@@ -7,3 +7,4 @@ Made by - immo, Hebiscuit, devgocri
 - Basic Moderation -- plannned 
 - Dynamic Help Commannd -- on hold
 - Make Serverinfo look better fr 
+- Clean up ugly spaghetti code in misc
