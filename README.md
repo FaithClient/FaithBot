@@ -8,3 +8,4 @@ Made by - syseditor (immo), Hebiscuit, devgocri
 - Dynamic Help Commannd -- on hold
 - Make Serverinfo look better fr 
 - Clean up ugly spaghetti code in misc
+- Fix Join/Leave bug, shows user display name twice
