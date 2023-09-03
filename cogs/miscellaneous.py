@@ -10,7 +10,6 @@ class Miscellaneous(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    #@commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency", usage="`ft!ping`")
     @commands.slash_command(description = "Returns the bot's latency")
     async def ping(self, ctx: Context):
         embed = discord.Embed(
@@ -24,7 +23,6 @@ class Miscellaneous(commands.Cog):
         embed.timestamp = datetime.datetime.now()
         await ctx.respond(embed=embed)
     
-    #@commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar")
     @commands.slash_command(description="Returns a user's avatar")
     async def avatar(self, ctx: Context, member: Option(discord.Member, name = "member", description = "Who's avatar do you want?", required = False)):
         if member == None:
@@ -41,7 +39,6 @@ class Miscellaneous(commands.Cog):
         embed.timestamp = datetime.datetime.now()
         await ctx.respond(embed=embed)
     
-    #@commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server", usage="`f!serverinfo`")
     @commands.slash_command(description="Returns information about the server")
     async def serverinfo(self, ctx: Context):
         embed = discord.Embed(color=color)
@@ -63,7 +60,6 @@ class Miscellaneous(commands.Cog):
         await ctx.respond(f"This is the Server Information ↗ {ctx.author.mention}!", embed=embed)
     
 
-    #@commands.command(description="Returns information about a user", usage="`f!userinfo`")
     @commands.slash_command(description="Returns information about a user")
     async def userinfo(self, ctx: Context, member: Option(discord.Member, name = "member", description = "Who's profile do you want to check?", required = False)):
         if member is None:
@@ -81,29 +77,9 @@ class Miscellaneous(commands.Cog):
         embed.set_author(name=member.name, icon_url=memberAv)
         embed.set_thumbnail(url=memberAv)
 
-        # perms_to_check = [
-        #     "administrator",
-        #     "manage_guild",
-        #     "manage_roles",
-        #     "manage_channels",
-        #     "manage_messages",
-        #     "manage_webhooks",
-        #     "manage_nicknames",
-        #     "manage_emojis",
-        #     "kick_members",
-        #     "ban_members",
-        #     "mention_everyone",
-        # ]
-        # perm_list = discord.Permissions()
-        # for perm in perms_to_check:
-        #     if getattr(member.guild_permissions, perm):
-        #         perm_list.update(**{perm: True})
-
-
         embed.add_field(name="Joined", value=member.joined_at.strftime('%a, %b %d, %Y %H:%M %p'), inline=True)
         embed.add_field(name="Registered", value=member.created_at.strftime('%a, %b %d, %Y %H:%M %p'), inline=True)
         embed.add_field(name=f"Roles[{memberRoles - 1}]", value=roles, inline=False)
-        #embed.add_field(name="Key Permissions", value=perm, inline=False)
 
         embed.set_footer(text=f"ID: {member.id}")
         embed.timestamp = datetime.datetime.now()

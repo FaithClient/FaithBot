@@ -19,6 +19,8 @@ bot = commands.Bot(command_prefix='f!', intents=intents, help_command=None)
 async def on_ready():
     print(f"Successfully logged in as {bot.user}")
     await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name="f!help | FaithClient!"))
+
+    # Temporarily disabled
     # mg = bot.get_guild(942179596697210931)
     # channel = mg.get_channel(998383152793927760)
     # await channel.purge(limit=100)
