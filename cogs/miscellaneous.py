@@ -10,7 +10,6 @@ class Miscellaneous(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
     
-    #@commands.command(aliases=['latency', 'Ping', 'Latency'], description="Returns the bot's latency", usage="`ft!ping`")
     @commands.slash_command(description = "Returns the bot's latency")
     async def ping(self, ctx: Context):
         embed = discord.Embed(
@@ -20,11 +19,10 @@ class Miscellaneous(commands.Cog):
         embed.add_field(name='Bot Latency!', value=f"Bot ping is **{round(self.bot.latency * 1000)}ms**", inline=True)
         embed.set_author(name=self.bot.user, icon_url=self.bot.user.avatar)
         embed.set_thumbnail(url=self.bot.user.avatar)
-        embed.set_footer(text=f"Requested by {ctx.author}")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}")
         embed.timestamp = datetime.datetime.now()
         await ctx.respond(embed=embed)
     
-    #@commands.command(aliases=['Avatar', 'Av', 'av', 'AVATAR', 'AV', 'PFP', 'pfp', 'Pfp'], description="Returns a user's avatar")
     @commands.slash_command(description="Returns a user's avatar")
     async def avatar(self, ctx: Context, member: Option(discord.Member, name = "member", description = "Who's avatar do you want?", required = False)):
         if member == None:
@@ -37,11 +35,10 @@ class Miscellaneous(commands.Cog):
 
         embed = discord.Embed(title=f"{member.name}'s Avatar", color=color)
         embed.set_image(url=memberAv)
-        embed.set_footer(text=f"Requested by {ctx.author}")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}")
         embed.timestamp = datetime.datetime.now()
         await ctx.respond(embed=embed)
     
-    #@commands.command(aliases=['serverstats', 'server', 'serverinf', 'servinf'], description="Returns information about the server", usage="`f!serverinfo`")
     @commands.slash_command(description="Returns information about the server")
     async def serverinfo(self, ctx: Context):
         embed = discord.Embed(color=color)
@@ -63,7 +60,6 @@ class Miscellaneous(commands.Cog):
         await ctx.respond(f"This is the Server Information ↗ {ctx.author.mention}!", embed=embed)
     
 
-    #@commands.command(description="Returns information about a user", usage="`f!userinfo`")
     @commands.slash_command(description="Returns information about a user")
     async def userinfo(self, ctx: Context, member: Option(discord.Member, name = "member", description = "Who's profile do you want to check?", required = False)):
         if member is None:
@@ -81,29 +77,9 @@ class Miscellaneous(commands.Cog):
         embed.set_author(name=member.name, icon_url=memberAv)
         embed.set_thumbnail(url=memberAv)
 
-        # perms_to_check = [
-        #     "administrator",
-        #     "manage_guild",
-        #     "manage_roles",
-        #     "manage_channels",
-        #     "manage_messages",
-        #     "manage_webhooks",
-        #     "manage_nicknames",
-        #     "manage_emojis",
-        #     "kick_members",
-        #     "ban_members",
-        #     "mention_everyone",
-        # ]
-        # perm_list = discord.Permissions()
-        # for perm in perms_to_check:
-        #     if getattr(member.guild_permissions, perm):
-        #         perm_list.update(**{perm: True})
-
-
         embed.add_field(name="Joined", value=member.joined_at.strftime('%a, %b %d, %Y %H:%M %p'), inline=True)
         embed.add_field(name="Registered", value=member.created_at.strftime('%a, %b %d, %Y %H:%M %p'), inline=True)
         embed.add_field(name=f"Roles[{memberRoles - 1}]", value=roles, inline=False)
-        #embed.add_field(name="Key Permissions", value=perm, inline=False)
 
         embed.set_footer(text=f"ID: {member.id}")
         embed.timestamp = datetime.datetime.now()
@@ -174,12 +150,12 @@ class Miscellaneous(commands.Cog):
             embed = discord.Embed(color=discord.Color.yellow())
             embed.add_field(
                 name = "\n\n\nSexo",
-                value = "- Bedezu",
+                value = "\- Bedezu",
                 inline = False
             )
-            embed.set_thumbnail(url="https://cdn.shopify.com/s/files/1/1061/1924/products/Flushed_Emoji_Icon_5e6ce936-4add-472b-96ba-9082998adcf7_grande.png?width=473&height=473")
+            embed.set_thumbnail(url="https://cdn.emojidex.com/emoji/seal/flushed1.png?1605449223")
             embed.set_footer(
-                text = f"Requested by {message.author} | 😳"
+                text = f"Requested by {message.author.display_name} | 😳"
             )
             embed.timestamp = datetime.datetime.now()
             await message.reply(embed=embed)
