@@ -4,7 +4,7 @@ from discord.ext import commands, tasks
 from discord.ext.pages import PaginatorButton, Paginator, Page
 from discord import ApplicationContext as Context
 
-bot = commands.Bot
+color = 0xffd500
 
 class Important(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -120,7 +120,6 @@ class Important(commands.Cog):
     async def autostop(self):
         await self.bot.close()
     
-    #@commands.command(aliases=["d"], description="Returns the total downloads of the client")
     @commands.slash_command(description="Returns the total downloads of the client")
     async def downloads(self, ctx: Context):
         ds = requests.get("https://fcapi.manx7.net/anal?authKey=supersecretkey$o_peoplecansee4n3l")
@@ -130,26 +129,139 @@ class Important(commands.Cog):
         except:
             await ctx.respond(f"Download server is offline, so I couldn't get the count...")
     
-    @commands.slash_command(description = "Annouces a new faith release!")
-    @discord.option(name = "release", type = str)
-    @discord.option(name = "description", type = str)
-    @discord.option(name = "starting_image", type = discord.Attachment, description = "Set an image for the embed with the text (mandatory)", required = False)
-    @discord.option(name = "test_image", type = discord.Attachment, required = False)
-    async def announce(self, ctx: discord.ApplicationContext, release: str, description: str, starting_image: discord.Attachment = None, *, test_image: discord.Attachment = None):
-        if test_image == None:
-            if starting_image == None:
-                embed = discord.Embed(
-                    title = f"FaithClient v{release} - Release",
-                    description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
-                    color = discord.Color.yellow()
-                )
-            else:
-                embed = discord.Embed(
-                    title = f"FaithClient v{release} - Release",
-                    description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
-                    color = discord.Color.yellow()
-                ).set_image(url = starting_image.url)
-            await ctx.send(embed = embed)
+    @commands.slash_command(description = "Prepares an announcement of a new FaithClient release!")
+    @commands.has_any_role("Owner", "Co-Owner", "Bot Developer")
+    # @discord.option(name = "release", type = str)
+    # @discord.option(name = "description", type = str)
+    # @discord.option(name = "starting_image", type = discord.Attachment, description = "Set an image for the embed with the text (mandatory)", required = False)
+    # @discord.option(name = "test_image", type = discord.Attachment, required = False)
+    # async def announce(self, ctx: discord.ApplicationContext, release: str, description: str, starting_image: discord.Attachment = None, *, test_image: discord.Attachment = None):
+    #     if test_image == None:
+    #         if starting_image == None:
+    #             embed = discord.Embed(
+    #                 title = f"FaithClient v{release} - Release",
+    #                 description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                 color = discord.Color.yellow()
+    #             )
+    #         else:
+    #             embed = discord.Embed(
+    #                 title = f"FaithClient v{release} - Release",
+    #                 description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                 color = discord.Color.yellow()
+    #             ).set_image(url = starting_image.url)
+    #         await ctx.send(embed = embed)
+    #     else:
+    #         i = 0
+    #         buttons = [
+    #             PaginatorButton("first", emoji = "⏪", style = discord.ButtonStyle.green),
+    #             PaginatorButton("prev", emoji = "◀", style = discord.ButtonStyle.green),
+    #             PaginatorButton("page_indicator", style = discord.ButtonStyle.gray, disabled = True),
+    #             PaginatorButton("next", emoji = "▶", style = discord.ButtonStyle.green),
+    #             PaginatorButton("last", emoji = "⏩", style = discord.ButtonStyle.green)
+    #         ]
+    #         pages = [
+    #             Page(
+    #                 embeds = [ 
+    #                     discord.Embed(
+    #                         title = f"FaithClient v{release} - Release",
+    #                         description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                         color = discord.Color.dark_gold(),
+    #                         timestamp = datetime.datetime.now()
+    #                     ).set_footer(text = "Navigate using the buttons below!")
+    #                     if starting_image == None else
+    #                     (discord.Embed(
+    #                         title = f"FaithClient v{release} - Release",
+    #                         description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                         color = discord.Color.dark_gold(),
+    #                         timestamp = datetime.datetime.now()
+    #                     )).set_footer(text = "Navigate using the buttons below!").set_image(url = starting_image.url)
+    #                 ]
+    #             ),  
+    #             Page(
+    #                 embeds = [
+    #                     (discord.Embed(
+    #                         type = "image",
+    #                         color = discord.Color.dark_green(),
+    #                         timestamp = datetime.datetime.now()
+    #                     )).set_image(url = test_image.url).set_footer(text = "Navigate using the buttons below!")
+    #                 ]
+    #             )
+    #         ]
+    #         # while i + 1 <= len(test_image):
+    #         #     pages.append(
+    #         #         Page(
+    #         #             embed = (discord.Embed(
+    #         #                 type = "image"
+    #         #             )).set_image(url = test_image.url)
+    #         #         )
+    #         #     )
+    #         #     ++i
+    #         paginator = Paginator(
+    #             pages = pages,
+    #             show_indicator = True,
+    #             use_default_buttons = False,
+    #             custom_buttons = buttons,
+    #             disable_on_timeout = False,
+    #             loop_pages = True
+    #         )
+    #         await paginator.respond(ctx.interaction)
+    async def announce(self, ctx: discord.ApplicationContext):
+        # Information gathering - temporary template
+        channel = ctx.channel
+        author = ctx.author
+        def check(m: discord.Message):
+            return m.channel == channel and m.author == author
+
+        msg1 = await ctx.send("[!] Answer the following questions to give the bot the required information for the announcement to be built.")
+        msg2 = await ctx.send("[+] What version are we releasing?")
+        ans1 = await self.bot.wait_for("message", check=check)
+        release = ans1.content
+        await ans1.delete()
+
+        await msg2.edit(f"[+] v{release} it is. Write down a description for the announcement.")
+        ans2 = await self.bot.wait_for("message", check=check)
+        description = ans2.content
+        await ans2.delete()
+
+        await msg2.edit("[+] Great! Attach the front-page picture...")
+        ans3 = await self.bot.wait_for("message", check=check)
+        front_image = ans3.attachments
+        await ans3.delete()
+
+        await msg2.edit("[+] ...and pictures for the other pages.")
+        ans4 = await self.bot.wait_for("message", check=check)
+        page_images = ans4.attachments
+        await ans4.delete()
+
+        await msg1.delete()
+        fembed = await msg2.edit(content = "[!] Alright, here's the data you've given me:", embed=(discord.Embed(
+            colour = discord.Color.yellow(),
+            title = "Data"
+        )).add_field(name = "Release", value = release, inline = False)
+        .add_field(name = "Description", value = description, inline = False)
+        .add_field(name = "Front image", value = "Selected" if len(front_image) == 1 is not None else "Not selected")
+        .add_field(name = "Page images", value = f"({len(page_images)}) Selected" if len(page_images) > 0 else "Not selected"))
+        warning = await ctx.send("[!] Is that all?")
+        answer = await self.bot.wait_for("message", check=check)
+        match answer.content:
+            case "yes" | "Y" | "y":
+                answer.delete()
+                msg2.delete()
+                await warning.edit("[!] Creating the announcement, please wait")
+            case "no" | "N" | "n":
+                pass
+
+        # Paginator
+        if len(page_images) == 0:
+            embed = discord.Embed(
+                title = f"FaithClient v{release} - Release",
+                description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                color = color
+            )
+            if len(front_image) != 0:
+                file = front_image[0]
+                embed.set_image(file.url)
+            await ctx.send(embed)
         else:
             i = 0
             buttons = [
@@ -159,6 +271,7 @@ class Important(commands.Cog):
                 PaginatorButton("next", emoji = "▶", style = discord.ButtonStyle.green),
                 PaginatorButton("last", emoji = "⏩", style = discord.ButtonStyle.green)
             ]
+
             pages = [
                 Page(
                     embeds = [ 
@@ -168,33 +281,25 @@ class Important(commands.Cog):
                             color = discord.Color.dark_gold(),
                             timestamp = datetime.datetime.now()
                         ).set_footer(text = "Navigate using the buttons below!")
-                        if starting_image == None else
+                        if len(front_image) == 0 else
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
                             description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                             color = discord.Color.dark_gold(),
                             timestamp = datetime.datetime.now()
-                        )).set_footer(text = "Navigate using the buttons below!").set_image(url = starting_image.url)
-                    ]
-                ),  
-                Page(
-                    embeds = [
-                        discord.Embed(
-                            type = "image",
-                            color = discord.Color.dark_green()
-                        ).set_image(url = test_image.url)
+                        )).set_footer(text = "Navigate using the buttons below!").set_image(url = front_image[0].url)
                     ]
                 )
             ]
-            # while i + 1 <= len(test_image):
-            #     pages.append(
-            #         Page(
-            #             embed = (discord.Embed(
-            #                 type = "image"
-            #             )).set_image(url = test_image.url)
-            #         )
-            #     )
-            #     ++i
+
+            while i + 1 <= len(page_images):
+                image = page_images[i]
+                pages.append(discord.Embed(
+                    type = "image",
+                    timestamp = datetime.datetime.now(),
+                    color = color
+                ).set_image(image.url))
+            
             paginator = Paginator(
                 pages = pages,
                 show_indicator = True,
@@ -203,6 +308,7 @@ class Important(commands.Cog):
                 disable_on_timeout = False,
                 loop_pages = True
             )
+            await warning.delete()
             await paginator.respond(ctx.interaction)
 
 def setup(bot: commands.Bot):

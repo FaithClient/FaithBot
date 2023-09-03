@@ -1,5 +1,5 @@
 # Imports
-import discord, os, datetime, asyncio
+import discord, os, datetime, asyncio, tracemalloc
 
 from cogs.important import Important
 from discord.ext import commands
@@ -59,5 +59,6 @@ async def reload(ctx: Context):
 
 # Runs Bot
 if __name__ == "__main__":
+    tracemalloc.start()
     load_dotenv()
     bot.run(os.getenv("DISCORD_TOKEN"))
