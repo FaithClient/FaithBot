@@ -164,10 +164,10 @@ class Miscellaneous(commands.Cog):
             embed = discord.Embed(color=discord.Color.yellow())
             embed.add_field(
                 name = "\n\n\nSexo",
-                value = "- Bedezu",
+                value = "\- Bedezu",
                 inline = False
             )
-            embed.set_thumbnail(url="https://cdn.shopify.com/s/files/1/1061/1924/products/Flushed_Emoji_Icon_5e6ce936-4add-472b-96ba-9082998adcf7_grande.png?width=473&height=473")
+            embed.set_thumbnail(url="https://cdn.emojidex.com/emoji/seal/flushed1.png?1605449223")
             embed.set_footer(
                 text = f"Requested by {message.author} | 😳"
             )
