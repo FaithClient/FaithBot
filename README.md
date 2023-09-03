@@ -1,6 +1,6 @@
 # FaithBot
 Discord Bot for FaithClient
-Made by - immo, Hebiscuit, devgocri
+Made by - syseditor (immo), Hebiscuit, devgocri
 
 ## MAKE SURE TO HAVE MOST COMMANDS REPLY
 ## TODO
