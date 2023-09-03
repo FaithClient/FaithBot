@@ -20,7 +20,7 @@ class Miscellaneous(commands.Cog):
         embed.add_field(name='Bot Latency!', value=f"Bot ping is **{round(self.bot.latency * 1000)}ms**", inline=True)
         embed.set_author(name=self.bot.user, icon_url=self.bot.user.avatar)
         embed.set_thumbnail(url=self.bot.user.avatar)
-        embed.set_footer(text=f"Requested by {ctx.author}")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}")
         embed.timestamp = datetime.datetime.now()
         await ctx.respond(embed=embed)
     
@@ -37,7 +37,7 @@ class Miscellaneous(commands.Cog):
 
         embed = discord.Embed(title=f"{member.name}'s Avatar", color=color)
         embed.set_image(url=memberAv)
-        embed.set_footer(text=f"Requested by {ctx.author}")
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}")
         embed.timestamp = datetime.datetime.now()
         await ctx.respond(embed=embed)
     
