@@ -111,7 +111,7 @@ class Miscellaneous(commands.Cog):
         await ctx.respond(embed=embed)
     
     @commands.slash_command()
-    @commands.has_any_role("Owner", "Bot Developer")
+    @discord.commands.default_permissions(manage_guild = True)
     async def rules(self, ctx: Context):
         embed = discord.Embed(
             color = discord.Color.red(),
@@ -156,6 +156,16 @@ class Miscellaneous(commands.Cog):
         )
 
         await ctx.send(embed = embed, file = discord.File("assets/rules.png"))
+    
+    @commands.slash_command()
+    @discord.option(name = "number", type = int, description = "The number of messages you want to delete.", required = True, min_value = 1)
+    @discord.commands.default_permissions(manage_messages = True)
+    async def purge(self, ctx: Context, number: int):
+        final_num = 0
+        msges = await ctx.channel.purge(limit = number)
+        for msg in msges:
+            final_num += 1
+        await ctx.respond(f"[{ctx.author.mention}] Deleted {final_num} message(s).", delete_after = 4.0)
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):

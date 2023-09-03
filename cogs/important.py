@@ -137,11 +137,18 @@ class Important(commands.Cog):
     @discord.option(name = "test_image", type = discord.Attachment, required = False)
     async def announce(self, ctx: discord.ApplicationContext, release: str, description: str, starting_image: discord.Attachment = None, *, test_image: discord.Attachment = None):
         if test_image == None:
-            embed = discord.Embed(
-                title = f"FaithClient v{release} - Release",
-                description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
-                color = discord.Color.yellow()
-            )
+            if starting_image == None:
+                embed = discord.Embed(
+                    title = f"FaithClient v{release} - Release",
+                    description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                    color = discord.Color.yellow()
+                )
+            else:
+                embed = discord.Embed(
+                    title = f"FaithClient v{release} - Release",
+                    description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                    color = discord.Color.yellow()
+                ).set_image(url = starting_image.url)
             await ctx.send(embed = embed)
         else:
             i = 0
@@ -161,6 +168,13 @@ class Important(commands.Cog):
                             color = discord.Color.dark_gold(),
                             timestamp = datetime.datetime.now()
                         ).set_footer(text = "Navigate using the buttons below!")
+                        if starting_image == None else
+                        (discord.Embed(
+                            title = f"FaithClient v{release} - Release",
+                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            color = discord.Color.dark_gold(),
+                            timestamp = datetime.datetime.now()
+                        )).set_footer(text = "Navigate using the buttons below!").set_image(url = starting_image.url)
                     ]
                 ),  
                 Page(
