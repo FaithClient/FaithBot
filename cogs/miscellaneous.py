@@ -169,7 +169,7 @@ class Miscellaneous(commands.Cog):
             )
             embed.set_thumbnail(url="https://cdn.emojidex.com/emoji/seal/flushed1.png?1605449223")
             embed.set_footer(
-                text = f"Requested by {message.author} | 😳"
+                text = f"Requested by {message.author.display_name} | 😳"
             )
             embed.timestamp = datetime.datetime.now()
             await message.reply(embed=embed)
