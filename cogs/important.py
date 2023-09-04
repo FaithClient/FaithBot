@@ -205,6 +205,7 @@ class Important(commands.Cog):
     #         )
     #         await paginator.respond(ctx.interaction)
     async def announce(self, ctx: discord.ApplicationContext):
+        await ctx.defer()
         # Information gathering - temporary template
         channel = ctx.channel
         author = ctx.author
@@ -233,91 +234,111 @@ class Important(commands.Cog):
         await ans4.delete()
 
         await msg1.delete()
-        await msg2.edit(content = "[!] Alright, here's the data you've given me:", embed=(discord.Embed(
+        message = await ctx.send(content = "[!] Alright, here's the data you've given me:", embed=(discord.Embed(
             colour = discord.Color.yellow(),
             title = "Data"
-        )).add_field(name = "Release", value = release, inline = False)
+        )).add_field(name = "Release", value = f"v{release}", inline = False)
         .add_field(name = "Description", value = description, inline = False)
-        .add_field(name = "Front image", value = "Selected" if len(front_image) == 1 is not None else "Not selected")
+        .add_field(name = "Front image", value = "Selected" if len(front_image) == 1 else "Not selected")
         .add_field(name = "Page images", value = f"({len(page_images)}) Selected" if len(page_images) > 0 else "Not selected"))
         warning = await ctx.send("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
         answer = await self.bot.wait_for("message", check=check)
-        async def corrections(answer: discord.Message):
+        async def corrections(answer: discord.Message, msg: discord.Message):
             match answer.content:
                 case "yes" | "Y" | "y":
                     await answer.delete()
                     await warning.edit("[!] Alright, creating the announcement, please wait")
-                case "no" | "N" | "n":
+                case "no" | "N" | "n": #WIP
                     await answer.delete()
-                    fembed = msg2.embeds[0]
+                    fembed = msg.embeds[0]
                     fields = fembed.fields
                     async def no(warning: discord.Message):
                         await warning.edit("[!] What would you like to change?\n\t1 -> Release number\n\t2 -> Description\n\t3 -> Front image\n\t4 ->Page image(s)\n\t5 -> Cancel\n\t6 -> Stop command")
                         ans = await self.bot.wait_for("message", check=check)
                         match ans.content:
                             case "1":
+                                await ans.delete()
                                 await warning.edit("[+] Alright, give me a new release number")
                                 ans = await self.bot.wait_for("message", check=check)
                                 release = ans.content
+                                await ans.delete()
                                 field = fields[0]
                                 field.value = release
-                                await msg2.edit(embed=fembed)
+                                await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer)
+                                await corrections(answer, message)
                             case "2":
+                                await ans.delete()
                                 await warning.edit("[+] Alright, give me a new description")
                                 ans = await self.bot.wait_for("message", check=check)
                                 description = ans.content
+                                await ans.delete()
                                 field = fields[1]
                                 field.value = description
-                                await msg2.edit(embed=fembed)
+                                await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer)
+                                await corrections(answer, message)
                             case "3":
+                                await ans.delete()
                                 await warning.edit("[+] Alright, give me a new front-page image")
                                 ans = await self.bot.wait_for("message", check=check)
-                                front_image = ans.attachments[0]
+                                front_image = ans.attachments
+                                await ans.delete()
                                 field = fields[2]
-                                field.value = "Selected" if len(front_image) == 1 is not None else "Not selected"
-                                await msg2.edit(embed=fembed)
+                                field.value = "Selected" if len(front_image) == 1 else "Not selected"
+                                await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer)
+                                await corrections(answer, message)
                             case "4":
+                                await ans.delete()
                                 await warning.edit("[+] Alright, give me new page images")
                                 ans = await self.bot.wait_for("message", check=check)
                                 page_images = ans.attachments
+                                await ans.delete()
                                 field = fields[3]
                                 field.value = f"({len(page_images)}) Selected" if len(page_images) > 0 else "Not selected"
-                                await msg2.edit(embed=fembed)
+                                await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer)
+                                await corrections(answer, message)
                             case "5":
+                                await ans.delete()
                                 await warning.edit("[!] Alright, creating the announcement, please wait")
                             case "6":
+                                await ans.delete()
                                 await warning.edit("[!] Alright, cancelling process...")
                                 await asyncio.sleep(2)
-                                return
+                                return "cancel"
                             case _:
+                                await ans.delete()
                                 await warning.edit("[!] Wrong option, repeating process...")
                                 await no(warning)
-                    await no(warning)
-        await corrections(answer)
+                    return await no(warning)
+                case _:
+                    pass
+        a = await corrections(answer, message)
+        if a == "cancel":
+            await warning.delete()
+            await message.delete()
+            await ctx.delete()
+            return
 
         # Paginator
         if len(page_images) == 0:
             embed = discord.Embed(
                 title = f"FaithClient v{release} - Release",
-                description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                 color = color
             )
             if len(front_image) != 0:
                 file = front_image[0]
-                embed.set_image(file.url)
-            await ctx.send(embed)
+                embed.set_image(url = file.url)
+            await warning.delete()
+            await message.delete()
+            await ctx.send(embed=embed)
         else:
             i = 0
             buttons = [
@@ -333,14 +354,14 @@ class Important(commands.Cog):
                     embeds = [ 
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
-                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                             color = discord.Color.dark_gold(),
                             timestamp = datetime.datetime.now()
                         )).set_footer(text = "Navigate using the buttons below!")
                         if len(front_image) == 0 else
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
-                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                             color = discord.Color.dark_gold(),
                             timestamp = datetime.datetime.now()
                         )).set_footer(text = "Navigate using the buttons below!").set_image(url = front_image[0].url)
@@ -350,11 +371,12 @@ class Important(commands.Cog):
 
             while i + 1 <= len(page_images):
                 image = page_images[i]
-                pages.append(discord.Embed(
+                pages.append((discord.Embed(
                     type = "image",
                     timestamp = datetime.datetime.now(),
                     color = color
-                ).set_image(url = image.url))
+                ).set_image(url = image.url).set_footer(text = "Navigate using the buttons below!")))
+                i += 1
             
             paginator = Paginator(
                 pages = pages,
@@ -365,6 +387,7 @@ class Important(commands.Cog):
                 loop_pages = True
             )
             await warning.delete()
+            await message.delete()
             await paginator.respond(ctx.interaction)
     
     @commands.slash_command()
