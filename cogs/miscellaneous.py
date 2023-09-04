@@ -1,4 +1,4 @@
-import discord, datetime
+import discord, datetime, requests, json
 from discord import ApplicationContext as Context
 from discord import Option
 from discord.ext import commands
@@ -113,6 +113,37 @@ class Miscellaneous(commands.Cog):
             )
             embed.timestamp = datetime.datetime.now()
             await message.reply(embed=embed)
+    
+    
+    @commands.slash_command(description="Sends random meme")
+    async def meme(self, ctx: Context):
+        await ctx.defer()
+        r = requests.get(f"https://api.pymeme.repl.co/random/")
+        data = r.json()
+        memechoice: str = data['meme']['image url']
+        embed = discord.Embed (
+            title=data['meme']['title'],
+            description=f"Author: {data['meme']['author']}",
+            color=color
+        )
+        embed.set_image(url=memechoice)
+        embed.set_author(
+            name=self.bot.user.display_name, 
+            icon_url=self.bot.user.avatar
+        )
+        embed.add_field(
+            name='Upvotes:', 
+            value=data['meme']['upvotes'], 
+            inline=True
+        )
+        embed.add_field(
+            name='Original Post:', 
+            value=data['meme']['post url'], 
+            inline=True
+        )
+        embed.set_footer(text = f"Requested by {ctx.author.display_name}")
+        embed.timestamp = datetime.datetime.now()
+        await ctx.respond(embed=embed)
 
 def setup(bot: commands.Bot):
     bot.add_cog(Miscellaneous(bot))
