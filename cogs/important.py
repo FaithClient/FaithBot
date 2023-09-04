@@ -311,5 +311,16 @@ class Important(commands.Cog):
             await warning.delete()
             await paginator.respond(ctx.interaction)
 
+    
+    @commands.slash_command()
+    @discord.option(name = "number", type = int, description = "The number of messages you want to delete.", required = True, min_value = 1)
+    @discord.commands.default_permissions(manage_messages = True)
+    async def purge(self, ctx: Context, number: int):
+        final_num = 0
+        msges = await ctx.channel.purge(limit = number)
+        for msg in msges:
+            final_num += 1
+        await ctx.respond(f"[{ctx.author.mention}] Deleted {final_num} message(s).", delete_after = 4.0)
+
 def setup(bot: commands.Bot):
     bot.add_cog(Important(bot))

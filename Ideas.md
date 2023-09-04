@@ -2,7 +2,6 @@
 
 E.g: Blah blah - Hebiscuits ✅/❌(Name, second name) <- Approved or disapproved by others
 
-- Memes Command, takes a meme from a meme api and sends an embed - Hebiscuits ✅(Immo, dev)
 - Ticketing system, I planned to do this but wanted ur thoughts - Hebiscuits ✅(Immo, dev)
 - Make Serverinfo, userinfo send an embeded image with the data on the image, like welcome and leaving - Hebiscuits ✅(Immo) ❓(dev - for now focus on the other things but im happy with you adding the feature)
 - Moderation system, structure close to the help command, easier to use - Immo ✅(Heb, dev)
