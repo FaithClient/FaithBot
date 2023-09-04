@@ -32,7 +32,7 @@ class Welcoming(commands.Cog):
         pfp = Image.open(data)
         pfp = pfp.resize((135, 135))
 
-        text = f"{member.name}#{member.display_name}"
+        text = f"{member.name}"
         leave.paste(pfp, (92, 77))
         text_width = font.getlength(text)
         w,h = text_width, font.size
@@ -63,7 +63,7 @@ class Welcoming(commands.Cog):
         pfp = Image.open(data)
         pfp = pfp.resize((135, 135))
 
-        text = f"{member.name}#{member.display_name}"
+        text = f"{member.name}"
         welcome.paste(pfp, (92, 77))
         text_width = font.getlength(text)
         w,h = text_width, font.size
@@ -99,7 +99,7 @@ Please read the rules at <#942179596718186554>, and you can download the client 
 #         pfp = Image.open(data)
 #         pfp = pfp.resize((135, 135))
 
-#         text = f"{member.name}#{member.discriminator}"
+#         text = f"{member.name}"
 #         welcome.paste(pfp, (92, 77))
 #         text_width = font.getlength(text)
 #         w,h = text_width, font.size

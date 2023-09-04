@@ -7,5 +7,5 @@ Made by - syseditor (immo), Hebiscuit, devgocri
 - Basic Moderation -- plannned 
 - Dynamic Help Commannd -- on hold
 - Make Serverinfo look better fr 
-- Clean up ugly spaghetti code in misc
-- Fix Join/Leave bug, shows user display name twice
+- Clean up ugly spaghetti code in misc -- in the works
+- 
