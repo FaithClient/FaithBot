@@ -7,4 +7,4 @@ Made by - syseditor (immo), Hebiscuit, devgocri
 - Moderation foundation -- planned
 - Dynamic Help Commannd -- on hold
 - Clean up ugly spaghetti code in misc -- in the works
-- Ticketing system
+- Ticketing system -- in progress, most complex thing ive done im so tired man 😔
