@@ -205,7 +205,8 @@ class Important(commands.Cog):
     #         )
     #         await paginator.respond(ctx.interaction)
     async def announce(self, ctx: discord.ApplicationContext):
-        await ctx.defer()
+        pictures = []
+        await ctx.delete()
         # Information gathering - temporary template
         channel = ctx.channel
         author = ctx.author
@@ -233,17 +234,23 @@ class Important(commands.Cog):
         page_images = ans4.attachments
         await ans4.delete()
 
+        await msg2.delete()
         await msg1.delete()
         message = await ctx.send(content = "[!] Alright, here's the data you've given me:", embed=(discord.Embed(
             colour = discord.Color.yellow(),
             title = "Data"
-        )).add_field(name = "Release", value = f"v{release}", inline = False)
+        )).add_field(name = "Release", value = f"{release}", inline = False)
         .add_field(name = "Description", value = description, inline = False)
         .add_field(name = "Front image", value = "Selected" if len(front_image) == 1 else "Not selected")
         .add_field(name = "Page images", value = f"({len(page_images)}) Selected" if len(page_images) > 0 else "Not selected"))
         warning = await ctx.send("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
         answer = await self.bot.wait_for("message", check=check)
-        async def corrections(answer: discord.Message, msg: discord.Message):
+        pictures.insert(0, front_image)
+        i = 1
+        while i <= len(page_images):
+            pictures.insert(i, page_images[i-1])
+            i += 1
+        async def corrections(answer: discord.Message, msg: discord.Message, pictures: list):
             match answer.content:
                 case "yes" | "Y" | "y":
                     await answer.delete()
@@ -253,7 +260,7 @@ class Important(commands.Cog):
                     fembed = msg.embeds[0]
                     fields = fembed.fields
                     async def no(warning: discord.Message):
-                        await warning.edit("[!] What would you like to change?\n\t1 -> Release number\n\t2 -> Description\n\t3 -> Front image\n\t4 ->Page image(s)\n\t5 -> Cancel\n\t6 -> Stop command")
+                        await warning.edit("[!] What would you like to change?\n\t1 -> Release number\n\t2 -> Description\n\t3 -> Front image\n\t4 -> Page image(s)\n\t5 -> Cancel\n\t6 -> Stop command")
                         ans = await self.bot.wait_for("message", check=check)
                         match ans.content:
                             case "1":
@@ -267,7 +274,7 @@ class Important(commands.Cog):
                                 await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer, message)
+                                await corrections(answer, message, pictures)
                             case "2":
                                 await ans.delete()
                                 await warning.edit("[+] Alright, give me a new description")
@@ -279,31 +286,40 @@ class Important(commands.Cog):
                                 await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer, message)
+                                await corrections(answer, message, pictures)
                             case "3":
                                 await ans.delete()
                                 await warning.edit("[+] Alright, give me a new front-page image")
                                 ans = await self.bot.wait_for("message", check=check)
-                                front_image = ans.attachments
+                                pictures[0] = ans.attachments
                                 await ans.delete()
                                 field = fields[2]
-                                field.value = "Selected" if len(front_image) == 1 else "Not selected"
+                                field.value = "Selected" if len(ans.attachments) == 1 else "Not selected"
                                 await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer, message)
+                                await corrections(answer, message, pictures)
                             case "4":
                                 await ans.delete()
                                 await warning.edit("[+] Alright, give me new page images")
                                 ans = await self.bot.wait_for("message", check=check)
-                                page_images = ans.attachments
+                                if len(ans.attachments) > 0:
+                                    i = 1
+                                    while i <= len(ans.attachments):
+                                        pictures[i] = ans.attachments[i-1]
+                                        i += 1
+                                else:
+                                    i = len(pictures - 1)
+                                    while i >= len(pictures - 1) and i != 0:
+                                        pictures.remove(i)
+                                        i -= 1
                                 await ans.delete()
                                 field = fields[3]
-                                field.value = f"({len(page_images)}) Selected" if len(page_images) > 0 else "Not selected"
+                                field.value = f"({len(ans.attachments)}) Selected" if len(ans.attachments) > 0 else "Not selected"
                                 await msg.edit(embed=fembed)
                                 await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
                                 answer = await self.bot.wait_for("message", check=check)
-                                await corrections(answer, message)
+                                await corrections(answer, message, pictures)
                             case "5":
                                 await ans.delete()
                                 await warning.edit("[!] Alright, creating the announcement, please wait")
@@ -315,16 +331,34 @@ class Important(commands.Cog):
                             case _:
                                 await ans.delete()
                                 await warning.edit("[!] Wrong option, repeating process...")
+                                await asyncio.sleep(1)
                                 await no(warning)
                     return await no(warning)
                 case _:
-                    pass
-        a = await corrections(answer, message)
+                    await answer.delete()
+                    await warning.edit("[!] Wrong option, repeating process...")
+                    await asyncio.sleep(1)
+                    await warning.edit("[!] Is that all? (y/Y/yes for yes | n/N/no for no)")
+                    answer = await self.bot.wait_for("message", check=check)
+                    await corrections(answer, message, pictures)
+            return pictures
+        a = await corrections(answer, message, pictures)
         if a == "cancel":
             await warning.delete()
             await message.delete()
-            await ctx.delete()
             return
+        elif a != None:
+            a = pictures
+
+        # Final data
+        emb = message.embeds[0]
+        fields = emb.fields
+        release = fields[0].value[0]
+        description = fields[1].value
+        try: front_image = pictures[0]
+        except: front_image = []
+        try: page_images = pictures[1:]
+        except: page_images = []
 
         # Paginator
         if len(page_images) == 0:
@@ -336,6 +370,7 @@ class Important(commands.Cog):
             if len(front_image) != 0:
                 file = front_image[0]
                 embed.set_image(url = file.url)
+            embed.set_author(name = "FaithClient Team", icon_url = self.bot.user.avatar.url)
             await warning.delete()
             await message.delete()
             await ctx.send(embed=embed)
@@ -354,17 +389,18 @@ class Important(commands.Cog):
                     embeds = [ 
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
-                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
-                            color = discord.Color.dark_gold(),
+                            description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            color = color,
                             timestamp = datetime.datetime.now()
-                        )).set_footer(text = "Navigate using the buttons below!")
+                        )).set_footer(text = "Navigate using the buttons below!").set_author(name = "FaithClient Team", icon_url = self.bot.user.avatar.url)
                         if len(front_image) == 0 else
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
-                            description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
-                            color = discord.Color.dark_gold(),
+                            description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            color = color
+                            ,
                             timestamp = datetime.datetime.now()
-                        )).set_footer(text = "Navigate using the buttons below!").set_image(url = front_image[0].url)
+                        )).set_footer(text = "Navigate using the buttons below!").set_image(url = front_image[0].url).set_author(name = "FaithClient Team", icon_url = self.bot.user.avatar.url)
                     ]
                 )
             ]
@@ -388,7 +424,8 @@ class Important(commands.Cog):
             )
             await warning.delete()
             await message.delete()
-            await paginator.respond(ctx.interaction)
+            msg = await self.bot.get_channel(1148734231527313509).send("Creating announcement")
+            await paginator.respond(ctx.interaction) # ISSUES HERE
     
     @commands.slash_command()
     @discord.option(name = "number", type = int, description = "The number of messages you want to delete.", required = True, min_value = 1)
