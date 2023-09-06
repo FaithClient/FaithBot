@@ -4,7 +4,8 @@ from discord.ext import commands, tasks
 from discord.ext.pages import PaginatorButton, Paginator, Page
 from discord import ApplicationContext as Context
 
-color = 0xffd500
+color = 0xffd500 # Embed color
+chid = 1148734231527313509 # Channel id for announcements
 
 class Important(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -206,8 +207,8 @@ class Important(commands.Cog):
     #         await paginator.respond(ctx.interaction)
     async def announce(self, ctx: discord.ApplicationContext):
         pictures = []
-        await ctx.delete()
-        # Information gathering - temporary template
+        await ctx.defer()
+        # Information gathering
         channel = ctx.channel
         author = ctx.author
         def check(m: discord.Message):
@@ -373,7 +374,9 @@ class Important(commands.Cog):
             embed.set_author(name = "FaithClient Team", icon_url = self.bot.user.avatar.url)
             await warning.delete()
             await message.delete()
-            await ctx.send(embed=embed)
+            await ctx.delete()
+            channel = self.bot.get_channel(chid)
+            await channel.send(embed=embed)
         else:
             i = 0
             buttons = [
@@ -424,8 +427,7 @@ class Important(commands.Cog):
             )
             await warning.delete()
             await message.delete()
-            msg = await self.bot.get_channel(1148734231527313509).send("Creating announcement")
-            await paginator.respond(ctx.interaction) # ISSUES HERE
+            await paginator.respond(ctx.interaction, target = self.bot.get_channel(1148734231527313509), target_message = "Sent!") # ISSUES HERE
     
     @commands.slash_command()
     @discord.option(name = "number", type = int, description = "The number of messages you want to delete.", required = True, min_value = 1)
