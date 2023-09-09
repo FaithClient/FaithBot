@@ -33,9 +33,9 @@ class Important(commands.Cog):
                 await message.edit(content=None, embed=membed)
                 await asyncio.sleep(1)
                 t -= 1
-        website = requests.get("https://faithclient.vercel.app/", timeout=5)
+        website = requests.get("https://faithclient.tech/", timeout=5)
         try:
-            ds = requests.get("https://api.faithclient.tk/anal?authKey=supersecretkey$o_peoplecansee4n3l", timeout=5)
+            ds = requests.get("https://server.faithclient.tech/anal?authKey=supersecretkey$o_peoplecansee4n3l", timeout=5)
             ds = ds.json()
             dss = ds["amOnline"]
             dc = ds["downloads"]
@@ -123,7 +123,7 @@ class Important(commands.Cog):
     
     @commands.slash_command(description="Returns the total downloads of the client")
     async def downloads(self, ctx: Context):
-        ds = requests.get("https://fcapi.manx7.net/anal?authKey=supersecretkey$o_peoplecansee4n3l")
+        ds = requests.get("https://server.faithclient.tech/anal?authKey=supersecretkey$o_peoplecansee4n3l")
         try:
             counter = ds.json()["downloads"]
             await ctx.respond(f"Downloads: {counter}") #for testing perposes
@@ -140,13 +140,13 @@ class Important(commands.Cog):
     #         if starting_image == None:
     #             embed = discord.Embed(
     #                 title = f"FaithClient v{release} - Release",
-    #                 description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                 description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tech)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
     #                 color = discord.Color.yellow()
     #             )
     #         else:
     #             embed = discord.Embed(
     #                 title = f"FaithClient v{release} - Release",
-    #                 description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                 description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tech)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
     #                 color = discord.Color.yellow()
     #             ).set_image(url = starting_image.url)
     #         await ctx.send(embed = embed)
@@ -164,14 +164,14 @@ class Important(commands.Cog):
     #                 embeds = [ 
     #                     discord.Embed(
     #                         title = f"FaithClient v{release} - Release",
-    #                         description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                         description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tech)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
     #                         color = discord.Color.dark_gold(),
     #                         timestamp = datetime.datetime.now()
     #                     ).set_footer(text = "Navigate using the buttons below!")
     #                     if starting_image == None else
     #                     (discord.Embed(
     #                         title = f"FaithClient v{release} - Release",
-    #                         description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tk)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+    #                         description = f"{description}\n\n\n[Click here to download/check out our website](https://faithclient.tech)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
     #                         color = discord.Color.dark_gold(),
     #                         timestamp = datetime.datetime.now()
     #                     )).set_footer(text = "Navigate using the buttons below!").set_image(url = starting_image.url)
@@ -365,7 +365,7 @@ class Important(commands.Cog):
         if len(page_images) == 0:
             embed = discord.Embed(
                 title = f"FaithClient v{release} - Release",
-                description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tech)\n[View our Terms of Service](https://faithclient.tech/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                 color = color
             )
             if len(front_image) != 0:
@@ -392,14 +392,14 @@ class Important(commands.Cog):
                     embeds = [ 
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
-                            description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tech)\n[View our Terms of Service](https://faithclient.tech/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                             color = color,
                             timestamp = datetime.datetime.now()
                         )).set_footer(text = "Navigate using the buttons below!").set_author(name = "FaithClient Team", icon_url = self.bot.user.avatar.url)
                         if len(front_image) == 0 else
                         (discord.Embed(
                             title = f"FaithClient v{release} - Release",
-                            description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tk)\n[View our Terms of Service](https://faithclient.tk/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
+                            description = f"{description}\n\n[Click here to download/check out our website](https://faithclient.tech)\n[View our Terms of Service](https://faithclient.tech/tos)\n\nPlease report any bugs or suggestions to <#1031019801658785895>",
                             color = color
                             ,
                             timestamp = datetime.datetime.now()
