@@ -1,4 +1,7 @@
 # FaithBot
+> [!IMPORTANT]
+> This repository is no longer maintained and will remain as a public archive.
+
 Discord Bot for FaithClient
 Made by - syseditor (immo), Hebiscuit, devgocri
 
